@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('title')</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     {{-- CSS --}}
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -18,11 +19,14 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
 
+    <link rel="stylesheet" href="{{asset('css/nprogress.css')}}">
+
     {{-- JAVA SCRIPTT --}}
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/sw.js')}}"></script>
     <script src="{{asset('js/f.js')}}"></script>
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="{{asset('js/nprogress.js')}}"></script>
+    {{-- <script src="bower_components/jquery/dist/jquery.min.js"></script> --}}
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="dist/js/adminlte.min.js"></script>
     <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
@@ -30,10 +34,13 @@
     <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
     <script src="bower_components/chart.js/Chart.js"></script>
-    <script src="dist/js/pages/dashboard2.js"></script>
+    {{-- <script src="dist/js/pages/dashboard2.js"></script> --}}
     <script src="dist/js/demo.js"></script>
 
     @yield('head')
+
+
+
 </head>
 
 @if (Route::currentRouteName() == 'masuk' || Route::currentRouteName() == 'daftar')
@@ -43,6 +50,7 @@
 @else
 
 <body class="@yield('classBody')">
+
     <div class="wrapper">
         @include('temp.navbar')
         @include('temp.aside')
@@ -50,6 +58,9 @@
         @include('temp.foo')
         {{-- @include('temp.conaside') --}}
     </div>
+
+
+    <script src="{{asset('js/page/'.Route::currentRouteName().'.js')}}"></script>
 </body>
 @endif
 
