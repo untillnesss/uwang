@@ -15,11 +15,46 @@
     <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
 
     <link rel="stylesheet" href="{{asset('css/nprogress.css')}}">
+
+    <style>
+        .swal2-popup {
+            font-size: 1.6rem !important;
+        }
+
+        .mr-1{
+            margin-right: 2.5px;
+        }
+        .mr-2{
+            margin-right: 5.0px;
+        }
+        .mr-3{
+            margin-right: 7.5px;
+        }
+        .mr-4{
+            margin-right: 10.0px;
+        }
+
+        .ml-1{
+            margin-right: 2.5px;
+        }
+        .ml-2{
+            margin-right: 5.0px;
+        }
+        .ml-3{
+            margin-right: 7.5px;
+        }
+        .ml-4{
+            margin-right: 10.0px;
+        }
+
+
+    </style>
 
     {{-- JAVA SCRIPTT --}}
     <script src="{{asset('js/jquery.js')}}"></script>
@@ -34,6 +69,8 @@
     <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
     <script src="bower_components/chart.js/Chart.js"></script>
+    <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     {{-- <script src="dist/js/pages/dashboard2.js"></script> --}}
     <script src="dist/js/demo.js"></script>
 
@@ -56,7 +93,7 @@
         @include('temp.aside')
         @yield('body')
         @include('temp.foo')
-        {{-- @include('temp.conaside') --}}
+        @include('temp.conaside')
     </div>
 
 

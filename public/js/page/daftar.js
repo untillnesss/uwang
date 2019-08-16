@@ -1,5 +1,5 @@
 $('#daftar').on('click', function () {
-    var data ={
+    var data = {
         nama: $('#nama').val(),
         email: $('#email').val(),
         pass: $('#pass').val(),
@@ -13,42 +13,52 @@ $('#daftar').on('click', function () {
         if (d != '') {
             lewat++
             if (lewat == 5 && i == 'org') {
-                return $.ajax({
-                    method: 'POST',
-                    data: data,
-                    url: '/daftar',
-                    beforeSend: function(){
-                        np();
-                    },
-                    success: function(d){
-                        if(d == 'y'){
-                            np('done')
-                            Swal.fire({
-                                title: 'Berhasil !',
-                                text: 'Berhasil mendaftar, silahkan masuk untuk melanjutkan',
-                                type: 'success',
-                                allowOutsideClick: false
-                            }).then((res)=>{
-                                if(res.value){
-                                    direct('/masuk')
-
+                // VAL EMAIL
+                if (valEmail(data.email)) {
+                    if (data.pass == data.rePass) {
+                        return $.ajax({
+                            method: 'POST',
+                            data: data,
+                            url: '/daftar',
+                            beforeSend: function () {
+                                np();
+                            },
+                            success: function (d) {
+                                if (d == 'y') {
+                                    Swal.fire({
+                                        title: 'Berhasil !',
+                                        text: 'Berhasil mendaftar, silahkan masuk untuk melanjutkan',
+                                        type: 'success',
+                                        allowOutsideClick: false
+                                    }).then((res) => {
+                                        if (res.value) {
+                                            np('done')
+                                            direct('/masuk')
+                                        }
+                                    });
+                                } else if (d == 'x') {
+                                    toast({
+                                        title: 'Email sudah terdaftar, silahkan coba yang lainnya!',
+                                        type: 'error'
+                                    });
+                                    np('done')
                                 }
-                            });
-                        }
+                            }
+                        })
+                    } else {
+                        toast({
+                            title: 'Password tidak sama',
+                            type: 'error',
+                        })
                     }
-                })
+                }
+
             }
         } else {
-            return a('Gagal !', 'Semua field harus di isi ya pak !', 'error');
+            return toast({
+                title: 'Harap semua field di isi semuanya!',
+                type: 'error'
+            })
         }
     });
 });
-
-$(function () {
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-        increaseArea: '20%' /* optional */
-    });
-});
-

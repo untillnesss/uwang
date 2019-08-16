@@ -17,14 +17,18 @@ class CreateTpoinsTable extends Migration
             $table->bigIncrements('id');
             $table->text('jenis');
             $table->text('nama');
+            $table->text('banyak');
+            $table->text('harga');
             $table->text('jumlah');
+            $table->text('saldo');
             $table->unsignedBigInteger('idLaporan');
             $table->unsignedBigInteger('idUser');
+
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('idLaporan')->references('id')->on('tlaporans')->onDelete('cascade');
             $table->foreign('idUser')->references('id')->on('tusers')->onDelete('cascade');
-
         });
     }
 

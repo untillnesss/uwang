@@ -1,8 +1,6 @@
 @extends('temp.temp')
 
-@section('title')
-MASUK
-@endsection
+@section('title', 'DAFTAR')
 
 @section('body')
 

@@ -17,6 +17,8 @@ class CreateTlaporansTable extends Migration
             $table->bigIncrements('id');
             $table->text('tanggal');
             $table->unsignedBigInteger('idUser');
+
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('idUser')->references('id')->on('tusers')->onDelete('cascade');

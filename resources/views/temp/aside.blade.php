@@ -7,7 +7,7 @@
                 <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Nama User Pak !</p>
+                <p>{{Session::get('userLogin')->org}}</p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
@@ -27,7 +27,7 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">DAFTAR MENU</li>
             <li>
-                <a href="#">
+                <a href="/">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                     {{-- <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
@@ -49,7 +49,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a href="#">
+                    <a href="/laporan">
                             <i class="fa fa-files-o"></i>
                             <span>Daftar Laporan</span>
                         </a>
@@ -70,7 +70,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="#" class="btnSignOut">
                     <i class="fa fa-sign-out"></i>
                     <span>Keluar</span>
                 </a>
@@ -237,3 +237,19 @@
     </section>
     <!-- /.sidebar -->
 </aside>
+
+<script>
+    $('.btnSignOut').on('click', function () {
+        Swal.fire({
+            title: 'Perhatian !',
+            text: 'Apakah anda yakin ingin keluar .?',
+            type: 'question',
+            showCancelButton: true,
+        }).then((res) => {
+            if (res.value) {
+                direct('/keluar')
+            }
+        })
+    })
+
+</script>

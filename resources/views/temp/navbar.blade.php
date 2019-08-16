@@ -234,7 +234,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Nama User Pak !</span>
+                            <span class="hidden-xs">{{Session::get('userLogin')->nama}}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -267,7 +267,7 @@
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <button class="btn btn-default btn-flat btnSignOut" type="button">Sign out</button>
                                 </div>
                             </li>
                         </ul>
@@ -281,3 +281,18 @@
 
         </nav>
     </header>
+
+    <script>
+        $('.btnSignOut').on('click', function(){
+            Swal.fire({
+                title: 'Perhatian !',
+                text: 'Apakah anda yakin ingin keluar .?',
+                type: 'question',
+                showCancelButton: true,
+            }).then((res)=>{
+                if(res.value){
+                    direct('/keluar')
+                }
+            })
+        })
+    </script>
