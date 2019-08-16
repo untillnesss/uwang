@@ -22,6 +22,7 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/nprogress.css')}}">
     <link rel="stylesheet" href="{{asset('css/datatables.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/datetime.css')}}">
 
 
     @yield('css')
@@ -97,13 +98,15 @@
     <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    {{-- <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script> --}}
 
     {{-- <script src="{{asset('js/jquery.js')}}"></script> --}}
     <script src="{{asset('js/sw.js')}}"></script>
     <script src="{{asset('js/f.js')}}"></script>
     <script src="{{asset('js/nprogress.js')}}"></script>
+    <script src="{{asset('js/moment.js')}}"></script>
+    <script src="{{asset('js/datetime.js')}}"></script>
     <script src="{{asset('js/datatables.min.js')}}"></script>
 
     @if (Route::currentRouteName() == 'daftar' || Route::currentRouteName()== 'masuk')

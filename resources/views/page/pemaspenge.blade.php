@@ -70,22 +70,27 @@
                             <tr>
                                 <th style="width: 50%">Total pemasukan</th>
                                 <td class="text-right">:</td>
-                                <td id="summaryPemasukan">1000</td>
+                                <td id="summaryPemasukan">0</td>
                             </tr>
                             <tr>
                                 <th>Total pengeluaran</th>
                                 <td class="text-right">:</td>
-                                <td id="summaryPengeluaran">1000</td>
+                                <td id="summaryPengeluaran">0</td>
+                            </tr>
+                            <tr>
+                                <th>Total</th>
+                                <td class="text-right">:</td>
+                                <td id="summaryTotal">0</td>
                             </tr>
                             <tr>
                                 <th>Saldo sebelumnya</th>
                                 <td class="text-right">:</td>
-                                <td>1000</td>
+                                <td>0</td>
                             </tr>
                             <tr>
                                 <th>Total saldo sekarng</th>
                                 <th class="text-right">:</th>
-                                <th>1000</th>
+                                <th>0</th>
                             </tr>
                         </table>
                     </div>

@@ -64,6 +64,16 @@
                             <input type="date" class="form-control" id="tanggal" value="{{ date('Y-m-d') }}">
                         </div>
                     </div>
+                    {{-- <div class="col-xs-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker3'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div> --}}
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <div class="card bg-info text-white">
                             <div class="card-body">
@@ -95,7 +105,7 @@
                     <div class="col-xs-12 col-md-12 col-lg-12">
                         <div class="form-group">
                             <label for="">Masukkan tanggal</label>
-                            <input type="text" name="" id="idTanggalEdit">
+                            <input type="hidden" name="" id="idTanggalEdit">
                             <input type="date" class="form-control" id="tanggalEdit" value="">
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-// var dataTableLaporan;
+var G_idTanggalEdit = 0
 var dataTableLaporan = $("#example1").DataTable({
     processing: true,
     serverSide: true,
@@ -81,6 +81,7 @@ function editFun(id) {
         },
         success: function (data) {
             $('#idTanggalEdit').val(id)
+            G_idTanggalEdit = id
             $('#tanggalEdit').val(data.tanggal)
             $('#fieldPenanggalanEdit').html(penanggalan(data.tanggal))
 
@@ -132,7 +133,7 @@ $("#btnSimpanLaporan").on("click", function () {
             method: "POST",
             data: {
                 tanggal: tanggal,
-                id: id
+                id: G_idTanggalEdit
             },
             beforeSend: function () {
                 np();
@@ -159,3 +160,5 @@ $('#tanggalEdit').on('change', function () {
     var val = $(this).val()
     $('#fieldPenanggalanEdit').html(penanggalan(val))
 })
+
+// $('#datetimepicker3').datetimepicker();

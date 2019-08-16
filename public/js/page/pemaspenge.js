@@ -362,8 +362,9 @@ function deletePoin(index, id, idLaporanDelete) {
                     } else {
                         controllerFieldPoinLaporan(data);
                     }
-                    $('#summaryPemasukan').html(formatRupiah(writeSummary('+')))
-                    $('#summaryPengeluaran').html(formatRupiah(writeSummary('-')))
+                    $('#summaryPemasukan').html(writeSummary('+'))
+                    $('#summaryPengeluaran').html(writeSummary('-'))
+                    $('#summaryTotal').html(writeSummary('total'))
                 }
             });
         }
@@ -388,13 +389,15 @@ function addPoin() {
 
 $("#tbodyPoinLaporan").on("keyup", 'input', function () {
     preSavePoinLaporan($(this))
-    $('#summaryPemasukan').html(formatRupiah(writeSummary('+')))
-    $('#summaryPengeluaran').html(formatRupiah(writeSummary('-')))
+    $('#summaryPemasukan').html(writeSummary('+'))
+    $('#summaryPengeluaran').html(writeSummary('-'))
+    $('#summaryTotal').html(writeSummary('total'))
 });
 $("#tbodyPoinLaporan").on("change", 'select', function () {
     preSavePoinLaporan($(this))
-    $('#summaryPemasukan').html(formatRupiah(writeSummary('+')))
-    $('#summaryPengeluaran').html(formatRupiah(writeSummary('-')))
+    $('#summaryPemasukan').html(writeSummary('+'))
+    $('#summaryPengeluaran').html(writeSummary('-'))
+    $('#summaryTotal').html(writeSummary('total'))
 });
 
 function preSavePoinLaporan(thisis) {
@@ -440,7 +443,6 @@ function preSavePoinLaporan(thisis) {
             break;
     }
     localStorage.setItem('poinLaporan', JSON.stringify(data))
-    console.log(data[index])
 }
 
 function setJumlah(index) {
@@ -462,50 +464,78 @@ function setJumlah(index) {
 
 function savePoinLaporan() {
     var data = JSON.parse(localStorage.getItem('poinLaporan'))
-    var kosong = []
+
+    var inc = 0
+    var dataLen = data.length
+    var hasilFor = 5 * dataLen
+
 
     $.each(data, function (i, d) {
-        var dalamData = []
-        $.each(d, function (i, dd) {
-            dalamData.push(dd)
-            kosong.push(dalamData.filter(function (ddd) {
-                return ddd == ''
-            }))
-            console.log(dalamData);
-            console.log(kosong);
+        $.each(d, function (ii, dd) {
+            if (dd == '' || dd == null) {
+                ToastSwal('Harus diisi semuanya pak !', 'error')
+                return false
+            } else {
+                inc++
+            }
         })
     })
 
+    if (inc == hasilFor) {
+        console.log('pass');
 
-    // $.each(data, function (i, d) {
-    //     $.each(d, function (ii, dd) {
-    //         if (dd == '' || dd == null) {
-    //             ToastSwal('Harus diisi semuanya pak !', 'error')
-    //             return false
-    //         } else {
-    //             console.log('bisa');
-    //         }
-    //     })
-    // })
+    } else {
+        console.log('Gakpaass');
+
+    }
 }
 
-function writeSummary(type) {
+function writeSummary(type = '') {
     var data = JSON.parse(localStorage.getItem('poinLaporan'))
     var hasil = 0
+    var isNegative = false
 
-    var filteran = data.filter(function (d) {
-        return d.jenis == type
-    })
+    if (type == 'total') {
+        // MASUK PAK
+        var masuk = 0
+        var filteran = data.filter(function (d) {
+            return d.jenis == '+'
+        })
 
-    $.each(filteran, function (i, d) {
-        hasil = hasil + d.jumlah
-    })
+        $.each(filteran, function (i, d) {
+            masuk = masuk + d.jumlah
+        })
 
-    return hasil
+        // KELUAR PAK
+        var keluar = 0
+        var filteran = data.filter(function (d) {
+            return d.jenis == '-'
+        })
+
+        $.each(filteran, function (i, d) {
+            keluar = keluar + d.jumlah
+        })
+
+        // AKHIR
+        hasil = masuk - keluar
+        if (String(hasil).charAt(0) == '-') {
+            isNegative = true
+        }
+    } else {
+        var filteran = data.filter(function (d) {
+            return d.jenis == type
+        })
+
+        $.each(filteran, function (i, d) {
+            hasil = hasil + d.jumlah
+        })
+    }
+
+    return isNegative ? '-' + formatRupiah(hasil) : formatRupiah(hasil)
 }
 
-writeSummary()
 
 $(() => {
     loadDataLaporan();
+    writeSummary()
 });
