@@ -17,9 +17,11 @@ class CreateTsaldosTable extends Migration
             $table->bigIncrements('id');
             $table->text('jumlah');
             $table->unsignedBigInteger('idUser');
+            $table->bigInteger('idLaporan')->nullable();
             $table->timestamps();
 
             $table->foreign('idUser')->references('id')->on('tusers')->onDelete('cascade');
+            // $table->foreign('idLaporan')->references('id')->on('tlaporans')->onDelete('cascade');
         });
     }
 

@@ -20,7 +20,7 @@ class CreateTpoinsTable extends Migration
             $table->text('banyak');
             $table->text('harga');
             $table->text('jumlah');
-            $table->text('saldo');
+            $table->text('saldo')->nullable();
             $table->unsignedBigInteger('idLaporan');
             $table->unsignedBigInteger('idUser');
 

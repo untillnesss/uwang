@@ -24,22 +24,27 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            MENU
+            MENU LAPORAN
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-file"></i>
-                <span>Laporan</span>
-            </a>
-            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{route('laporan')}}">Daftar Laporan</a>
-                    <a class="collapse-item" href="{{route('pemaspenge')}}">Pemasukan & Pengeluaran</a>
-                </div>
-            </div>
+            <a class="nav-link" href="{{route('laporan')}}"><i class="fas fa-file fa-fw"></i><span>Daftar Laporan</span></a>
+            <a class="nav-link" href="{{route('pemaspenge')}}"><i class="fas fa-arrow-up fa-fw"></i><span>Pemasukan & Pengeluaran</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            MENU PREFERENSI
+        </div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{route('anggota')}}"><i class="fas fa-users fa-fw"></i><span>Anggota</span></a>
+            <a class="nav-link" href="{{route('laporan')}}"><i class="fas fa-cogs fa-fw"></i><span>Pengaturan</span></a>
         </li>
 
         <!-- Divider -->

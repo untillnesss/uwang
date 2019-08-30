@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class tlaporan extends Model
 {
     //
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $fillable = ['tanggal', 'idUser'];
 }

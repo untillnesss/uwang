@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class tsaldo extends Model
 {
     //
-    protected $fillable = ['jumlah', 'idUser'];
+    protected $fillable = ['jumlah', 'idUser', 'idLaporan'];
 }

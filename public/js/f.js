@@ -49,6 +49,7 @@ function toast({
     })
 }
 
+
 function valEmail(email) {
     var email = email
     var splitAt = email.split('@');
@@ -59,16 +60,18 @@ function valEmail(email) {
         if (splitDot.length > 1) {
             return true
         } else {
-            return toast({
+            toast({
                 title: 'Format email salah',
                 type: 'error',
             })
+            return false
         }
     } else {
-        return toast({
+        toast({
             title: 'Format email salah',
             type: 'error',
         })
+        return false
     }
 }
 

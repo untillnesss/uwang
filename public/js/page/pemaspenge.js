@@ -42,7 +42,7 @@ function templateAccLaporan(data) {
             d.tanggal +
             "', '" +
             d.id +
-            '\')">Kelola Laporan</button><button class="btn btn-danger btn-icon-split btn-sm"><span class="icon"><i class="fas fa-trash"></i></span><span class="text">Kosongkan</span></button></div></div></div>';
+            '\')">Kelola Laporan</button></div></div></div>';
         tmp += "</div>";
         tmp += "</div>";
 
@@ -62,8 +62,19 @@ function loadDataLaporan() {
             np();
         },
         success: function (data) {
-            $("#accordion").html(templateAccLaporan(data));
-            $("#idDaftarLaporan").empty();
+            if (data == "") {
+                var kosong = "";
+                kosong += '<div class="card">';
+                kosong += '<div class="card-body">';
+                kosong += "Tidak ada data laporan !";
+                kosong += "</div>";
+                kosong += "</div>";
+                $("#idDaftarLaporan").html(kosong);
+            } else {
+                $("#accordion").empty();
+                $("#accordion").html(templateAccLaporan(data));
+                $("#idDaftarLaporan").empty();
+            }
             np("done");
         }
     });
@@ -80,10 +91,9 @@ $(document).on("click", "a", function () {
                 url: apis + "pemaspenge/laporan/" + id,
                 success: function (data) {
                     var dleng = data.length;
-                    var lama = 10
-                    // var lama = Math.floor(Math.random() * (5000 - 1000)) + 1
+                    var lama = 10;
 
-                    setInterval(function () {
+                    setTimeout(function () {
                         if (data == "") {
                             var notice = "";
                             notice += '<div class="card">';
@@ -93,7 +103,6 @@ $(document).on("click", "a", function () {
                             notice += "</div>";
                             $("#noticeAccLaporan" + id + "").html(notice);
 
-                            ini.attr("data-load", true);
                         } else {
                             $("#cardBodyAccLaporan" + id + "").empty();
                             var tmp = "";
@@ -111,9 +120,17 @@ $(document).on("click", "a", function () {
                             });
                             tmp += "</tbody>";
                             tmp += "</table>";
+
+                            tmp += '<div class="row d-flex justify-content-end"><div class="col-sm-6 col-md-6 col-lg-6 pull-right">'
+                            tmp += '<table class="table table-stripped">'
+                            tmp += '<tr><th>Pemasukan</th><th>Pengeluaran</th><th>Jumlah</th></tr>'
+                            tmp += '<tr><td>Rp. ' + writeSummary('+', data) + '</td><td>Rp. ' + writeSummary('-', data) + '</td><td>Rp. ' + writeSummary('total', data) + '</td></tr>'
+                            tmp += '</table>'
+                            tmp += '</div></div>'
                             $("#cardBodyAccLaporan" + id + "").html(tmp);
                         }
-                    }, lama)
+                    }, lama);
+                    ini.attr("data-load", true);
                 }
             });
         }
@@ -148,6 +165,10 @@ function goToLaporan(tgl, idLaporan) {
                 controllerFieldPoinLaporan(data);
             }
             $("#fieldDetailLaporan").slideDown();
+            $("#summaryPemasukan").html(writeSummary("+"));
+            $("#summaryPengeluaran").html(writeSummary("-"));
+            $("#summaryTotal").html(writeSummary("total"));
+            // $("#summarySaldoSebelum").html(writeSummary("saldoSebelum"));
         }
     });
 }
@@ -164,6 +185,7 @@ function closeDetailMode() {
 
 function controllerFieldPoinLaporan(
     data = [{
+        id: "0",
         jenis: "",
         nama: "",
         banyak: "1",
@@ -189,17 +211,21 @@ function controllerFieldPoinLaporan(
 
 function templatePoinLaporan(dleng, d, i, type = "edit") {
     var tmp = "";
-    if (d.jenis == '+') {
-        var classTr = 'bg-tr-masuk'
-    } else if (d.jenis == '-') {
-        var classTr = 'bg-tr-keluar'
+    if (d.jenis == "+") {
+        var classTr = "bg-tr-masuk";
+    } else if (d.jenis == "-") {
+        var classTr = "bg-tr-keluar";
     }
     tmp += "<tr id='poin" + i + "' class='" + classTr + "'>";
     if (type == "edit") {
         tmp += "<td>";
         tmp += '<div class="form-group">';
         tmp +=
-            '<select name="" id="jenis' + i + '" class="form-control select" data-type="jenis" data-index="' + i + '">';
+            '<select name="" id="jenis' +
+            i +
+            '" class="form-control select" data-type="jenis" data-index="' +
+            i +
+            '">';
         if (d.jenis == "+") {
             tmp += '<option value="." disabled>Pilih tipe</option>';
             tmp += '<option value="+" selected>MASUK</option>';
@@ -221,7 +247,9 @@ function templatePoinLaporan(dleng, d, i, type = "edit") {
     tmp += '<div class="form-group">';
     if (type == "show") {
         tmp +=
-            '<input type="text" data-type="nama" data-index="' + i + '" id="nama' +
+            '<input type="text" data-type="nama" data-index="' +
+            i +
+            '" id="nama' +
             i +
             '" class="form-control text-gray-800" disabled value="' +
             d.nama +
@@ -229,10 +257,16 @@ function templatePoinLaporan(dleng, d, i, type = "edit") {
     } else {
         if (dleng == 0) {
             tmp +=
-                '<input type="text" data-type="nama" data-index="' + i + '" id="nama' + i + '" class="form-control">';
+                '<input type="text" data-type="nama" data-index="' +
+                i +
+                '" id="nama' +
+                i +
+                '" class="form-control">';
         } else {
             tmp +=
-                '<input type="text" data-type="nama" data-index="' + i + '" id="nama' +
+                '<input type="text" data-type="nama" data-index="' +
+                i +
+                '" id="nama' +
                 i +
                 '" class="form-control" value="' +
                 d.nama +
@@ -245,7 +279,9 @@ function templatePoinLaporan(dleng, d, i, type = "edit") {
     tmp += '<div class="form-group">';
     if (type == "show") {
         tmp +=
-            '<input type="text" data-type="banyak" data-index="' + i + '" id="banyak' +
+            '<input type="text" data-type="banyak" data-index="' +
+            i +
+            '" id="banyak' +
             i +
             '" class="form-control text-gray-800" disabled value="' +
             d.banyak +
@@ -253,10 +289,16 @@ function templatePoinLaporan(dleng, d, i, type = "edit") {
     } else {
         if (dleng == 0) {
             tmp +=
-                '<input type="text" data-type="banyak" data-index="' + i + '" id="banyak' + i + '" class="form-control">';
+                '<input type="text" data-type="banyak" data-index="' +
+                i +
+                '" id="banyak' +
+                i +
+                '" class="form-control">';
         } else {
             tmp +=
-                '<input type="text" data-type="banyak" data-index="' + i + '" id="banyak' +
+                '<input type="text" data-type="banyak" data-index="' +
+                i +
+                '" id="banyak' +
                 i +
                 '" class="form-control" value="' +
                 d.banyak +
@@ -269,7 +311,9 @@ function templatePoinLaporan(dleng, d, i, type = "edit") {
     tmp += '<div class="form-group">';
     if (type == "show") {
         tmp +=
-            '<input type="text" data-type="harga" data-index="' + i + '" id="harga' +
+            '<input type="text" data-type="harga" data-index="' +
+            i +
+            '" id="harga' +
             i +
             '" class="form-control text-gray-800" disabled value="' +
             d.harga +
@@ -277,10 +321,16 @@ function templatePoinLaporan(dleng, d, i, type = "edit") {
     } else {
         if (dleng == 0) {
             tmp +=
-                '<input type="text" data-type="harga" data-index="' + i + '" id="harga' + i + '" class="form-control">';
+                '<input type="text" data-type="harga" data-index="' +
+                i +
+                '" id="harga' +
+                i +
+                '" class="form-control">';
         } else {
             tmp +=
-                '<input type="text" data-type="harga" data-index="' + i + '" id="harga' +
+                '<input type="text" data-type="harga" data-index="' +
+                i +
+                '" id="harga' +
                 i +
                 '" class="form-control" value="' +
                 d.harga +
@@ -293,7 +343,9 @@ function templatePoinLaporan(dleng, d, i, type = "edit") {
     tmp += '<div class="form-group">';
     if (type == "show") {
         tmp +=
-            '<input type="text" data-type="jumlah" readonly disabled data-index="' + i + '" id="jumlah' +
+            '<input type="text" data-type="jumlah" readonly disabled data-index="' +
+            i +
+            '" id="jumlah' +
             i +
             '" class="form-control text-gray-800" disabled value="' +
             d.jumlah +
@@ -301,10 +353,16 @@ function templatePoinLaporan(dleng, d, i, type = "edit") {
     } else {
         if (dleng == 0) {
             tmp +=
-                '<input type="text" data-type="jumlah" readonly disabled data-index="' + i + '" id="jumlah' + i + '" class="form-control">';
+                '<input type="text" data-type="jumlah" readonly disabled data-index="' +
+                i +
+                '" id="jumlah' +
+                i +
+                '" class="form-control">';
         } else {
             tmp +=
-                '<input type="text" data-type="jumlah" readonly disabled data-index="' + i + '" id="jumlah' +
+                '<input type="text" data-type="jumlah" readonly disabled data-index="' +
+                i +
+                '" id="jumlah' +
                 i +
                 '" class="form-control" value="' +
                 d.jumlah +
@@ -362,9 +420,12 @@ function deletePoin(index, id, idLaporanDelete) {
                     } else {
                         controllerFieldPoinLaporan(data);
                     }
-                    $('#summaryPemasukan').html(writeSummary('+'))
-                    $('#summaryPengeluaran').html(writeSummary('-'))
-                    $('#summaryTotal').html(writeSummary('total'))
+                    $("#summaryPemasukan").html(writeSummary("+"));
+                    $("#summaryPengeluaran").html(writeSummary("-"));
+                    $("#summaryTotal").html(writeSummary("total"));
+                    // $("#summarySaldoSebelum").html(
+                    //     writeSummary("saldoSebelum")
+                    // );
                 }
             });
         }
@@ -375,6 +436,7 @@ function addPoin() {
     np();
     var data = JSON.parse(localStorage.getItem("poinLaporan"));
     var newData = {
+        id: "0",
         jenis: "",
         nama: "",
         banyak: "1",
@@ -387,155 +449,204 @@ function addPoin() {
     np("done");
 }
 
-$("#tbodyPoinLaporan").on("keyup", 'input', function () {
-    preSavePoinLaporan($(this))
-    $('#summaryPemasukan').html(writeSummary('+'))
-    $('#summaryPengeluaran').html(writeSummary('-'))
-    $('#summaryTotal').html(writeSummary('total'))
+$("#tbodyPoinLaporan").on("keyup", "input", function () {
+    preSavePoinLaporan($(this));
+    $("#summaryPemasukan").html(writeSummary("+"));
+    $("#summaryPengeluaran").html(writeSummary("-"));
+    $("#summaryTotal").html(writeSummary("total"));
+    // $("#summarySaldoSebelum").html(writeSummary("saldoSebelum"));
 });
-$("#tbodyPoinLaporan").on("change", 'select', function () {
-    preSavePoinLaporan($(this))
-    $('#summaryPemasukan').html(writeSummary('+'))
-    $('#summaryPengeluaran').html(writeSummary('-'))
-    $('#summaryTotal').html(writeSummary('total'))
+$("#tbodyPoinLaporan").on("change", "select", function () {
+    preSavePoinLaporan($(this));
+    $("#summaryPemasukan").html(writeSummary("+"));
+    $("#summaryPengeluaran").html(writeSummary("-"));
+    $("#summaryTotal").html(writeSummary("total"));
+    // $("#summarySaldoSebelum").html(writeSummary("saldoSebelum"));
 });
 
 function preSavePoinLaporan(thisis) {
-    var data = JSON.parse(localStorage.getItem('poinLaporan'))
-    var index = thisis.data('index')
-    var typeField = thisis.data('type')
-    var valueThis = thisis.val()
+    var data = JSON.parse(localStorage.getItem("poinLaporan"));
+    var index = thisis.data("index");
+    var typeField = thisis.data("type");
+    var valueThis = thisis.val();
 
     switch (typeField) {
-        case 'jenis':
-            if (valueThis == '+') {
-                $('tr#poin' + index + '').addClass('bg-tr-masuk')
-                $('tr#poin' + index + '').removeClass('bg-tr-keluar')
-            } else if (valueThis == '-') {
-                $('tr#poin' + index + '').addClass('bg-tr-keluar')
-                $('tr#poin' + index + '').removeClass('bg-tr-masuk')
+        case "jenis":
+            if (valueThis == "+") {
+                $("tr#poin" + index + "").addClass("bg-tr-masuk");
+                $("tr#poin" + index + "").removeClass("bg-tr-keluar");
+            } else if (valueThis == "-") {
+                $("tr#poin" + index + "").addClass("bg-tr-keluar");
+                $("tr#poin" + index + "").removeClass("bg-tr-masuk");
             }
-            data[index].jenis = thisis.val()
+            data[index].jenis = thisis.val();
             break;
-        case 'nama':
-            data[index].nama = thisis.val()
+        case "nama":
+            data[index].nama = thisis.val();
             break;
-        case 'banyak':
-            if (cekAngka(valueThis) && valueThis > 0 && valueThis.charAt(0) != 0) {
-                data[index].banyak = valueThis
-                data[index].jumlah = setJumlah(index)
+        case "banyak":
+            if (
+                cekAngka(valueThis) &&
+                valueThis > 0 &&
+                valueThis.charAt(0) != 0
+            ) {
+                data[index].banyak = valueThis;
+                data[index].jumlah = setJumlah(index);
             } else {
-                thisis.val('')
-                ToastSwal('Tidak boleh kosong atau negatif', 'error')
+                thisis.val("");
+                ToastSwal("Tidak boleh kosong atau negatif", "error");
             }
             break;
-        case 'harga':
-            if (cekAngka(valueThis) && valueThis > 0 && valueThis.charAt(0) != 0) {
-                data[index].harga = thisis.val()
-                data[index].jumlah = setJumlah(index)
+        case "harga":
+            if (
+                cekAngka(valueThis) &&
+                valueThis > 0 &&
+                valueThis.charAt(0) != 0
+            ) {
+                data[index].harga = thisis.val();
+                data[index].jumlah = setJumlah(index);
             } else {
-                thisis.val('')
-                ToastSwal('Harus angka', 'error')
+                thisis.val("");
+                ToastSwal("Harus angka", "error");
             }
             break;
-        case 'jumlah':
-            data[index].jumlah = thisis.val()
+        case "jumlah":
+            data[index].jumlah = thisis.val();
             break;
     }
-    localStorage.setItem('poinLaporan', JSON.stringify(data))
+    localStorage.setItem("poinLaporan", JSON.stringify(data));
 }
 
 function setJumlah(index) {
-    var banyak = $('input#banyak' + index + '').val()
-    var harga = $('input#harga' + index + '').val()
-    var jumlah = $('input#jumlah' + index + '')
+    var banyak = $("input#banyak" + index + "").val();
+    var harga = $("input#harga" + index + "").val();
+    var jumlah = $("input#jumlah" + index + "");
 
-    var hasil = harga * banyak
+    var hasil = harga * banyak;
 
     // if (isNaN(hasil)) {
     //     jumlah.val('')
     // } else {
     // }
 
-    jumlah.val(hasil)
-    return hasil
+    jumlah.val(hasil);
+    return hasil;
 }
 
-
 function savePoinLaporan() {
-    var data = JSON.parse(localStorage.getItem('poinLaporan'))
+    var data = JSON.parse(localStorage.getItem("poinLaporan"));
 
-    var inc = 0
-    var dataLen = data.length
-    var hasilFor = 5 * dataLen
-
+    var inc = 0;
+    var dataLen = data.length;
+    var hasilFor = 6 * dataLen;
 
     $.each(data, function (i, d) {
         $.each(d, function (ii, dd) {
-            if (dd == '' || dd == null) {
-                ToastSwal('Harus diisi semuanya pak !', 'error')
-                return false
+            if (dd == "" || dd == null) {
+                ToastSwal("Harus diisi semuanya pak !", "error");
+                return false;
             } else {
-                inc++
+                inc++;
             }
-        })
-    })
+        });
+    });
 
     if (inc == hasilFor) {
-        console.log('pass');
-
-    } else {
-        console.log('Gakpaass');
-
+        $.ajax({
+            url: apis + "pemaspenge/poin/save",
+            method: "POST",
+            data: {
+                idLaporan: G_idLaporan,
+                poin: JSON.parse(localStorage.getItem("poinLaporan")),
+                masuk: localStorage.getItem('+'),
+                keluar: localStorage.getItem('-'),
+                total: localStorage.getItem('total'),
+            },
+            beforeSend: function () {
+                Swal.fire({
+                    title: "Memperoses permintaan ..",
+                    text: "Menyimpan beberapa poin laporan untuk anda",
+                    onBeforeOpen: () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: false
+                });
+            },
+            success: () =>
+                Swal.fire({
+                    title: "Berhasil !",
+                    text: "Berhasil menyimpan poin !",
+                    type: "success",
+                    allowOutsideClick: false
+                }).then(res => {
+                    if (res.value) {
+                        window.location.reload();
+                    }
+                })
+        });
     }
 }
 
-function writeSummary(type = '') {
-    var data = JSON.parse(localStorage.getItem('poinLaporan'))
-    var hasil = 0
-    var isNegative = false
+function writeSummary(type = "", data = JSON.parse(localStorage.getItem("poinLaporan"))) {
 
-    if (type == 'total') {
+    var hasil = 0;
+    var isNegative = false;
+
+    if (type == "total") {
         // MASUK PAK
-        var masuk = 0
+        var masuk = 0;
         var filteran = data.filter(function (d) {
-            return d.jenis == '+'
-        })
+            return d.jenis == "+";
+        });
 
         $.each(filteran, function (i, d) {
-            masuk = masuk + d.jumlah
-        })
+            masuk = masuk + parseInt(d.jumlah);
+        });
 
         // KELUAR PAK
-        var keluar = 0
+        var keluar = 0;
         var filteran = data.filter(function (d) {
-            return d.jenis == '-'
-        })
+            return d.jenis == "-";
+        });
 
         $.each(filteran, function (i, d) {
-            keluar = keluar + d.jumlah
-        })
+            keluar = keluar + parseInt(d.jumlah);
+        });
 
         // AKHIR
-        hasil = masuk - keluar
-        if (String(hasil).charAt(0) == '-') {
-            isNegative = true
+        hasil = masuk - keluar;
+        if (String(hasil).charAt(0) == "-") {
+            isNegative = true;
         }
+
+    } else if (type == "saldoSebelum") {
+        $.ajax({
+            url: apis + "saldo/getSaldo",
+            method: "GET",
+            beforeSend: function () {
+                np();
+            },
+            success: function (data) {
+                np("done");
+                hasil = data["jumlah"];
+            }
+        });
     } else {
         var filteran = data.filter(function (d) {
-            return d.jenis == type
-        })
+            return d.jenis == type;
+        });
 
         $.each(filteran, function (i, d) {
-            hasil = hasil + d.jumlah
-        })
+            hasil = hasil + parseInt(d.jumlah);
+        });
     }
 
-    return isNegative ? '-' + formatRupiah(hasil) : formatRupiah(hasil)
-}
+    localStorage.setItem(type, hasil)
 
+    return isNegative ? "-" + formatRupiah(hasil) : formatRupiah(hasil);
+}
 
 $(() => {
     loadDataLaporan();
-    writeSummary()
+    // writeSummary();
 });

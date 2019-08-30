@@ -82,16 +82,16 @@
                                 <td class="text-right">:</td>
                                 <td id="summaryTotal">0</td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <th>Saldo sebelumnya</th>
                                 <td class="text-right">:</td>
-                                <td>0</td>
+                                <td id="summarySaldoSebelum">0</td>
                             </tr>
                             <tr>
                                 <th>Total saldo sekarng</th>
                                 <th class="text-right">:</th>
                                 <th>0</th>
-                            </tr>
+                            </tr> --}}
                         </table>
                     </div>
                 </div>

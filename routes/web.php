@@ -24,8 +24,14 @@ Route::get('/', 'index@index')->name('dashboard');
 Route::get('/laporan', 'laporan@index')->name('laporan');
 Route::get('/pemaspenge', 'pemaspenge@index')->name('pemaspenge');
 
+Route::get('/anggota', 'anggota@index')->name('anggota');
+
 
 // APIAPIAPIAPIAPIAPIAPIAPIAPIAPIAPIAPIAPPPPPPPPAPAPIAPIAPIPIA
+
+// SUMMARYYYY
+Route::get('/api/api/summary', 'summary@summary');
+Route::get('/api/api/pemasukanPengeluaran', 'summary@pemasukanPengeluaran');
 
 // SALDO
 Route::get('/api/api/saldo/getSaldo', 'apiapi@getSaldo');
@@ -44,3 +50,11 @@ Route::get('/api/api/laporan/loadDataLaporan', 'apiapi@loadDataLaporan');
 Route::get('/api/api/pemaspenge/laporan/{id}', 'apiapi@loadDetailLaporan');
 Route::post('/api/api/pemaspenge/poin', 'apiapi@poinLaporan');
 Route::post('/api/api/pemaspenge/poin/delete', 'apiapi@deletePoinLaporan');
+Route::post('/api/api/pemaspenge/poin/save', 'apiapi@savePoinLaporan');
+
+// ANGGOTA
+Route::get('/api/api/anggota/getDataAnggota', 'apiapi@getDataAnggota');
+Route::post('/api/api/anggota/addDataAnggota', 'apiapi@addDataAnggota');
+Route::post('/api/api/anggota/deleteDataAnggota', 'apiapi@deleteDataAnggota');
+
+Route::post('/api/api/anggota/kodeKeamanan', 'apiapi@kodeKeamanan');

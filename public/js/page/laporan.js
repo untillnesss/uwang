@@ -3,6 +3,7 @@ var dataTableLaporan = $("#example1").DataTable({
     processing: true,
     serverSide: true,
     ajax: apis + "laporan/getDataLaporan",
+    sort: false,
     columns: [{
             data: null,
             name: "tanggal",

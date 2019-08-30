@@ -23,7 +23,7 @@ class masuk extends Controller
             return 'x';
         } else {
             if (Hash::check($a->pass, $user[0]->password)) {
-                Session::put('userLogin', $user[0]); //PUT SESSIOON
+                Session::put('userLogin', $user[0]);                                    //PUT SESSIOON
                 return 'y';
             } else {
                 return 'x';

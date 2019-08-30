@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTusersTable extends Migration
+class CreateTanggotasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,19 @@ class CreateTusersTable extends Migration
      */
     public function up()
     {
-        Schema::create('tusers', function (Blueprint $table) {
+        Schema::create('tanggotas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('nama');
             $table->text('email');
-            $table->text('password');
-            $table->text('org');
+            $table->text('password')->nullable();
             $table->unsignedBigInteger('idLevel');
+            $table->text('status');
+            $table->text('kode');
+            $table->unsignedBigInteger('idUser');
             $table->timestamps();
 
             $table->foreign('idLevel')->references('id')->on('tlevels')->onDelete('cascade');
+            $table->foreign('idUser')->references('id')->on('tusers')->onDelete('cascade');
         });
     }
 
@@ -33,6 +36,6 @@ class CreateTusersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tusers');
+        Schema::dropIfExists('tanggotas');
     }
 }
