@@ -13,13 +13,13 @@
     <title>@yield('title')</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/nprogress.css')}}">
     <link rel="stylesheet" href="{{asset('css/datatables.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/datetime.css')}}">
@@ -27,18 +27,20 @@
 
     @yield('css')
     <style>
-        .bg-tr-keluar{
+        .bg-tr-keluar {
             background-color: rgba(231, 74, 59, 0.15);
         }
-        .bg-tr-masuk{
+
+        .bg-tr-masuk {
             background-color: rgba(28, 200, 138, 0.15);
         }
+
     </style>
 
 </head>
 
 <body id="page-top" class="@yield('classBody')">
-    @if (Route::currentRouteName() == 'masuk' || Route::currentRouteName() == 'daftar')
+    @if (Route::currentRouteName() == 'masuk' || Route::currentRouteName() == 'daftar' || Route::currentRouteName() == 'klaim')
     <div id="particles-js" style="
         position: fixed;
         height: 100%;
@@ -85,14 +87,14 @@
 
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
 
     <!-- Page level plugins -->
     <script src="{{asset('js/Chart.min.js')}}"></script>
@@ -110,15 +112,25 @@
     <script src="{{asset('js/datatables.min.js')}}"></script>
 
     @if (Route::currentRouteName() == 'daftar' || Route::currentRouteName()== 'masuk')
-        <script src="{{asset('js/particles.min.js')}}"></script>
-        <script>
-            particlesJS.load('particles-js', 'js/particlesjs-config.json', function () {
-                console.log('callback - particles.js config loaded');
-            });
-        </script>
+    <script src="{{asset('js/particles.min.js')}}"></script>
+    <script>
+        particlesJS.load('particles-js', '{{asset("js/particlesjs-config.json")}}', function () {
+            console.log('callback - particles.js config loaded');
+        });
+
+    </script>
     @endif
 
+    @if (Route::currentRouteName() == 'klaim')
+    <script src="{{asset('js/page/masuk.js')}}"></script>
+
+    @else
     <script src="{{asset('js/page/'.Route::currentRouteName().'.js')}}"></script>
+
+    @endif
+
+
+    @yield('js')
 
 
 </body>

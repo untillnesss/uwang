@@ -23,6 +23,7 @@ class CreateTanggotasTable extends Migration
             $table->text('kode');
             $table->unsignedBigInteger('idUser');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('idLevel')->references('id')->on('tlevels')->onDelete('cascade');
             $table->foreign('idUser')->references('id')->on('tusers')->onDelete('cascade');

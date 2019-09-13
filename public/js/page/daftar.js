@@ -32,7 +32,6 @@ $("#daftar").on("click", function () {
                                         allowOutsideClick: false
                                     }).then(res => {
                                         if (res.value) {
-                                            np("done");
                                             direct("/masuk");
                                         }
                                     });
@@ -41,8 +40,38 @@ $("#daftar").on("click", function () {
                                         title: "Email sudah terdaftar, silahkan coba yang lainnya!",
                                         type: "error"
                                     });
-                                    np("done");
+                                } else if (d == 'uda') {
+                                    Swal.fire({
+                                        title: 'Informasi !',
+                                        text: 'Email yang anda daftarkan, telah didaftarkan seorang admin menjadi anggotanya. Apakah anda ingin mengklaim akun anda atau tidak .?',
+                                        type: 'info',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'KLAIM',
+                                        cancelButtonText: 'TOLAK',
+                                        cancelButtonColor: 'crimson',
+                                        allowOutsideClick: false
+                                    }).then((res) => {
+                                        if (res.value == true) {
+                                            window.location.href = '/masuk/klaim'
+                                        } else {
+                                            $.ajax({
+                                                url: apis + 'masuk/klaim/tolak',
+                                                method: 'POST',
+                                                data: {
+                                                    email: $('#email').val()
+                                                },
+                                                beforeSend: function () {
+                                                    np()
+                                                },
+                                                success: function () {
+                                                    a('Berhasil !', 'Akun bisa berhasil ditolak, anda akan mendaftar sebagai admin');
+                                                    np('done')
+                                                }
+                                            });
+                                        }
+                                    })
                                 }
+                                np("done");
                             }
                         });
                     } else {

@@ -258,6 +258,7 @@ class apiapi extends Controller
                 ->join('tlevels', 'tanggotas.idLevel', '=', 'tlevels.id')
                 ->select('tanggotas.nama', 'tanggotas.email', 'tlevels.nama as level', 'tanggotas.status', 'tanggotas.kode', 'tanggotas.id')
                 ->orderBy('idLevel', 'asc')
+                ->withTrashed()
                 ->get()
         )->make(true);
     }

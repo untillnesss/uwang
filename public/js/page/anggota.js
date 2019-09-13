@@ -47,11 +47,9 @@ var dataTableAnggota = $("#example1").DataTable({
                         out = '<h6><span class="badge badge-success">ONLINE</span></h6>'
                         break;
                     case 'not':
-                        out = '<h6><span class="badge badge-error">DITOLAK</span></h6>'
+                        out = '<h6><span class="badge badge-danger">DITOLAK</span></h6>'
                         break;
-
                 }
-
                 return out
             }
         },
@@ -61,18 +59,23 @@ var dataTableAnggota = $("#example1").DataTable({
             width: "15% ",
             render: function (data) {
                 var btn = "";
+
                 if (data.status == 'pending') {
                     btn +=
                         '<button class="btn btn-sm btn-primary mr-2" data-toggle="tooltip" title="Lihat kode keamanan" data-placement="bottom" onclick="showKodeKeamanan(' +
                         data.id +
                         ')"><i class="fas fa-eye"></i></button>';
                 }
+
                 btn +=
                     '<button class="btn btn-sm btn-danger mr-2" onclick="deleteFun(' +
                     data.id +
                     ')"><i class="fas fa-trash"></i></button>';
-                btn +=
-                    '<button class="btn btn-sm btn-success mr-2" onclick="editFun(' + data.id + ')"><i class="fas fa-edit"></i></button>';
+
+                if (data.status == 'pending') {
+                    btn +=
+                        '<button class="btn btn-sm btn-success mr-2" onclick="editFun(' + data.id + ')"><i class="fas fa-edit"></i></button>';
+                }
 
                 return btn;
             }

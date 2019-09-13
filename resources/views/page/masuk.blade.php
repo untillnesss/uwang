@@ -23,21 +23,23 @@
                                 </div>
                                 <form class="user">
                                     <div class="form-group">
-                                        <input type="text" class="form-control form-control-user"
-                                            id="email"
+                                        <input type="text" class="form-control form-control-user" id="email"
                                             placeholder="Masukkan email">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="pass" placeholder="Masukkan password">
+                                        <input type="password" class="form-control form-control-user" id="pass"
+                                            placeholder="Masukkan password">
                                     </div>
                                     <a href="#" id="masuk" class="btn btn-primary btn-user btn-block">
                                         MASUK
                                     </a>
+                                    <a href="#" id="klaim" class="btn btn-secondary btn-user btn-block">
+                                        KLAIM AKUN
+                                    </a>
                                 </form>
                                 <hr>
                                 <div class="text-center">
-                                <a class="small" href="{{route('daftar')}}">Buat akun</a>
+                                    <a class="small" href="{{route('daftar')}}">Buat akun</a>
                                 </div>
                             </div>
                         </div>
@@ -51,4 +53,11 @@
 
 </div>
 
+@endsection
+@section('js')
+@if (Session::has('klaim'))
+<script>
+    $('#klaim').click();
+</script>
+@endif
 @endsection

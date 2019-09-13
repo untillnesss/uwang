@@ -18,6 +18,7 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
+        @if (Session::get('userLogin')->idLevel == '1')
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -33,6 +34,7 @@
             <a class="nav-link" href="{{route('pemaspenge')}}"><i class="fas fa-arrow-up fa-fw"></i><span>Pemasukan & Pengeluaran</span></a>
         </li>
 
+        @if (Session::get('userLogin')->idLevel == 1)
         <!-- Divider -->
         <hr class="sidebar-divider">
 
@@ -46,7 +48,9 @@
             <a class="nav-link" href="{{route('anggota')}}"><i class="fas fa-users fa-fw"></i><span>Anggota</span></a>
             <a class="nav-link" href="{{route('laporan')}}"><i class="fas fa-cogs fa-fw"></i><span>Pengaturan</span></a>
         </li>
+        @endif
 
+        @endif
         <!-- Divider -->
         <hr class="sidebar-divider">
         <!-- Sidebar Toggler (Sidebar) -->

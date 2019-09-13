@@ -20,19 +20,27 @@ class daftar extends Controller
     public function daftar(Request $a)
     {
         $cek = tuser::where('email', $a->email)->get()->count();
-        $cekk = tanggota::where('email', $a->email)->get()->count();
 
-        if ($cek == 0 && $cekk == 0) {
+        if ($cek == 0) {
+            $cekk = tanggota::where('email', $a->email)->get();
 
-            tuser::create([
-                'nama' => $a->nama,
-                'email' => $a->email,
-                'password' => Hash::make($a->pass),
-                'org' => $a->org,
-                'idLevel' => 1
-            ]);
+            if ($cekk->count() == 0) {
 
-            return 'admin';
+                tuser::create([
+                    'nama' => $a->nama,
+                    'email' => $a->email,
+                    'password' => Hash::make($a->pass),
+                    'org' => $a->org,
+                    'idLevel' => 1
+                ]);
+                return 'admin';
+            } else {
+                if ($cekk[0]->status == 'acc' || $cekk[0]->status == 'not') {
+                    return 'x';
+                } else {
+                    return 'uda';
+                }
+            }
         } else {
             return 'x';
         }

@@ -14,7 +14,13 @@ Route::get('/daftar', 'daftar@index')->name('daftar');
 Route::post('/daftar', 'daftar@daftar')->name('daftarPost');
 
 Route::get('/masuk', 'masuk@index')->name('masuk');
+Route::get('/masuk/klaim', 'masuk@klaim')->name('klaim');
 Route::post('/masuk', 'masuk@masuk')->name('masukPost');
+
+Route::post('/api/api/masuk/klaim/cekEmail', 'masuk@cekEmail');
+Route::post('/api/api/masuk/klaim/cekKode', 'masuk@cekKode');
+Route::post('/api/api/masuk/klaim/storePass', 'masuk@storePass');
+Route::post('/api/api/masuk/klaim/tolak', 'masuk@tolak');
 
 
 Route::get('/keluar', 'keluar@index')->name('keluar');
