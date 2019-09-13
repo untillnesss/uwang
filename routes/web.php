@@ -62,5 +62,6 @@ Route::post('/api/api/pemaspenge/poin/save', 'apiapi@savePoinLaporan');
 Route::get('/api/api/anggota/getDataAnggota', 'apiapi@getDataAnggota');
 Route::post('/api/api/anggota/addDataAnggota', 'apiapi@addDataAnggota');
 Route::post('/api/api/anggota/deleteDataAnggota', 'apiapi@deleteDataAnggota');
+Route::get('/api/api/laporan/prepareEditAnggota/{a}', 'apiapi@prepareEditAnggota');
 
 Route::post('/api/api/anggota/kodeKeamanan', 'apiapi@kodeKeamanan');

@@ -1,4 +1,4 @@
-var G_idTanggalEdit = 0
+var G_idAnggotaEdit = 0
 var dataTableAnggota = $("#example1").DataTable({
     processing: true,
     serverSide: true,
@@ -72,7 +72,7 @@ var dataTableAnggota = $("#example1").DataTable({
                     data.id +
                     ')"><i class="fas fa-trash"></i></button>';
 
-                if (data.status == 'pending') {
+                if (data.status != 'not') {
                     btn +=
                         '<button class="btn btn-sm btn-success mr-2" onclick="editFun(' + data.id + ')"><i class="fas fa-edit"></i></button>';
                 }
@@ -145,18 +145,42 @@ function deleteFun(id) {
 
 function editFun(id) {
     $.ajax({
-        url: apis + 'laporan/prepareEditLaporan/' + id,
+        url: apis + 'laporan/prepareEditAnggota/' + id,
         method: 'GET',
         beforeSend: function () {
             np()
         },
         success: function (data) {
-            $('#idTanggalEdit').val(id)
-            G_idTanggalEdit = id
-            $('#tanggalEdit').val(data.tanggal)
-            $('#fieldPenanggalanEdit').html(penanggalan(data.tanggal))
+            G_idAnggotaEdit = id
+            var el = ''
+            if (data.status == 'pending') {
+                el += '<div class="form-group">'
+                el += '<label for="">Masukkan nama</label>'
+                el += '<input type="text" class="form-control" id="namaEdit" placeholder="Bambang Wis RaaNgiro" value="' + data.nama + '">'
+                el += '</div>'
 
-            $('#editLaporanModal').modal('show')
+                el += '<div class="form-group">'
+                el += '<label for="">Masukkan email</label>'
+                el += '<input type="email" class="form-control" id="emailEdit" placeholder="example@email.com" value="' + data.email + '">'
+                el += '</div>'
+
+            }
+            el += '<div class="form-group">'
+            el += '<label for="">Pilih level</label>'
+            el += '<select name="" class="custom-select" id="levelEdit">'
+            el += '<option value="0" selected disabled>-- PILIH LEVEL --</option>'
+            $.each(JSON.parse(localStorage.getItem('level')), function (i, d) {
+                if (d.id == data.idLevel) {
+                    el += '<option selected value="' + ucwords(d.nama) + '">' + ucwords(d.nama) + '</option>'
+                } else {
+                    el += '<option value="' + ucwords(d.nama) + '">' + ucwords(d.nama) + '</option>'
+                }
+            })
+            el += '</select>'
+            el += '</div>'
+
+            $('#fieldEditAnggotaModal').html(el)
+            $('#editAnggotaModal').modal('show')
             np('done')
         }
     });

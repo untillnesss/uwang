@@ -2,7 +2,6 @@
 
 function role($view, $type, $passing = [])
 {
-
     if ($type == 'login') {
         if (!Session::has('userLogin')) {
             return redirect()->route('masuk');

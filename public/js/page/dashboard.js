@@ -42,6 +42,7 @@ function tambahkanSaldoAwal() {
         inputPlaceholder: 'Masukkan angka',
         confirmButtonText: 'SIMPAN',
         allowOutsideClick: false,
+        allowEscapeKey: false,
         inputValidator: (v) => {
             return new Promise((resolve) => {
                 if (v != '') {
@@ -67,6 +68,7 @@ function tambahkanSaldoAwal() {
                     if (d == 'y') {
                         a('Berhasil !', 'Berhasil menambahkan saldo awal', 'success')
                         getSaldo()
+                        getChartSaldo()
                     } else {
                         tambahkanSaldoAwal()
                     }
@@ -80,69 +82,73 @@ function tambahkanSaldoAwal() {
     })
 }
 
-$.ajax({
-    url: apis + 'summary',
-    method: 'GET',
-    success: function (data) {
-        var dataPerubahanSaldoPerHari = data[0]
 
-        var tanggal = []
-        $.each(data[1], function (i, d) {
-            tanggal.push(penanggalan(d.split('T')[0]).split(', ')[1])
-        })
+function getChartSaldo() {
 
-        var config = {
-            type: 'line',
-            data: {
-                labels: tanggal,
-                datasets: [{
-                    label: 'Saldo',
-                    backgroundColor: window.chartColors.red,
-                    borderColor: window.chartColors.red,
-                    data: dataPerubahanSaldoPerHari,
-                    fill: true
-                }]
-            },
-            options: {
-                legend: {
-                    display: false,
-                    position: 'top'
-                },
-                responsive: true,
-                title: {
-                    display: false,
-                    text: 'Chart.js Line Chart'
-                },
-                tooltips: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                hover: {
-                    mode: 'nearest',
-                    intersect: true
-                },
-                scales: {
-                    xAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: false,
-                            labelString: 'Tanggal'
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Jumlah'
-                        }
+    $.ajax({
+        url: apis + 'summary',
+        method: 'GET',
+        success: function (data) {
+            var dataPerubahanSaldoPerHari = data[0]
+
+            var tanggal = []
+            $.each(data[1], function (i, d) {
+                tanggal.push(penanggalan(d.split('T')[0]).split(', ')[1])
+            })
+
+            var config = {
+                type: 'line',
+                data: {
+                    labels: tanggal,
+                    datasets: [{
+                        label: 'Saldo',
+                        backgroundColor: window.chartColors.red,
+                        borderColor: window.chartColors.red,
+                        data: dataPerubahanSaldoPerHari,
+                        fill: true
                     }]
+                },
+                options: {
+                    legend: {
+                        display: false,
+                        position: 'top'
+                    },
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Chart.js Line Chart'
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Tanggal'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Jumlah'
+                            }
+                        }]
+                    }
                 }
             }
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, config);
         }
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, config);
-    }
-})
+    })
+}
 
 $.ajax({
     url: apis + 'pemasukanPengeluaran',
@@ -220,6 +226,7 @@ $.ajax({
 
 $(() => {
     getSaldo()
+    getChartSaldo();
 
     $('div.boxHeaderAccordion').on('click', function () {
         console.log($(this).data('type'));

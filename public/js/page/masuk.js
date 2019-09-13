@@ -24,7 +24,8 @@ $("#masuk").on("click", function () {
                                     title: "Berhasil !",
                                     text: "Berhasil masuk pak, Selamat datang !",
                                     type: "success",
-                                    allowOutsideClick: false
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
                                 }).then(res => {
                                     if (res.value) {
                                         direct("/");
@@ -55,7 +56,8 @@ $("#klaim").on("click", function () {
             showCancelButton: true,
             progressSteps: ["1", "2"],
             confirmButtonText: "Selanjutnya",
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            allowEscapeKey: false,
         })
         .queue([{
                 title: "Informasi !",
@@ -74,6 +76,7 @@ $("#klaim").on("click", function () {
                 Swal.fire({
                     title: "Memperoses ...",
                     allowOutsideClick: false,
+                    allowEscapeKey: false,
                     onBeforeOpen: () => {
                         Swal.showLoading();
                         $.ajax({
@@ -96,6 +99,7 @@ $("#klaim").on("click", function () {
                                     localStorage.setItem('klaimEmail', res.value[1])
                                     Swal.mixin({
                                         allowOutsideClick: false,
+                                        allowEscapeKey: false,
                                         showCancelButton: true,
                                         progressSteps: [
                                             '3', '4'
@@ -124,6 +128,7 @@ $("#klaim").on("click", function () {
                                             Swal.fire({
                                                 title: 'Memperoses ...',
                                                 allowOutsideClick: false,
+                                                allowEscapeKey: false,
                                                 onBeforeOpen: () => {
                                                     Swal.showLoading()
                                                     $.ajax({
@@ -226,6 +231,7 @@ function klaimPassword(type = 'biasa') {
 
         return Swal.mixin({
             allowOutsideClick: false,
+            allowEscapeKey: false,
             progressSteps: step,
             confirmButtonText: 'Selanjutnya',
             showCancelButton: true
@@ -286,6 +292,7 @@ function klaimPassword(type = 'biasa') {
         }]
         return Swal.mixin({
             allowOutsideClick: false,
+            allowEscapeKey: false,
             progressSteps: step,
             confirmButtonText: 'Selanjutnya',
             showCancelButton: false
@@ -318,6 +325,7 @@ function storePass(res) {
 
     Swal.fire({
         allowOutsideClick: false,
+        allowEscapeKey: false,
         title: 'Tunggu sebentar ...',
         text: 'Semuanya sedang diperoses, silahkan tunggu beberapa saat.',
         onBeforeOpen: () => {

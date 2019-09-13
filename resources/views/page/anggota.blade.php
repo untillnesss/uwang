@@ -2,6 +2,10 @@
 
 @section('title', 'DASHBOARD')
 
+@section('meta')
+    <meta name="level" content="{{$level}}">
+@endsection
+
 @section('body')
 
 <!-- Begin Page Content -->
@@ -92,7 +96,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editLaporanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="editAnggotaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -104,18 +108,23 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xs-12 col-md-12 col-lg-12">
+                    <div class="col-xs-12 col-md-12 col-lg-12" id="fieldEditAnggotaModal">
                         <div class="form-group">
-                            <label for="">Masukkan tanggal</label>
-                            <input type="hidden" name="" id="idTanggalEdit">
-                            <input type="date" class="form-control" id="tanggalEdit" value="">
+                            <label for="">Masukkan nama</label>
+                            <input type="text" class="form-control" id="namaEdit" placeholder="Bambang Wis RaaNgiro">
                         </div>
-                    </div>
-                    <div class="col-xs-12 col-md-12 col-lg-12">
-                        <div class="card bg-info text-white">
-                            <div class="card-body">
-                                <div id="fieldPenanggalanEdit"></div>
-                            </div>
+                        <div class="form-group">
+                            <label for="">Masukkan email</label>
+                            <input type="text" class="form-control" id="emailEdit" placeholder="email@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Pilih level</label>
+                            <select name="" class="custom-select" id="levelEdit">
+                                <option value="0" selected disabled>-- PILIH LEVEL --</option>
+                                @foreach ($level as $lvl)
+                                <option value="{{$lvl->id}}">{{ucwords($lvl->nama)}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -126,5 +135,17 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+
+@section('js')
+
+@if ($level)
+    <script>
+        var data = $('meta[name="level"]').attr('content')
+        localStorage.setItem('level', data)
+    </script>
+@endif
 
 @endsection

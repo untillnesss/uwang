@@ -294,6 +294,11 @@ class apiapi extends Controller
         tanggota::destroy($a->id);
     }
 
+    public function prepareEditAnggota(tanggota $a)
+    {
+        return $a;
+    }
+
     public function kodeKeamanan(Request $a)
     {
         return tanggota::where('id', $a->id)->select('nama', 'kode')->first();
