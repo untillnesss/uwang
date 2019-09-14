@@ -41,7 +41,8 @@
 </head>
 
 <body id="page-top" class="@yield('classBody')">
-    @if (Route::currentRouteName() == 'masuk' || Route::currentRouteName() == 'daftar' || Route::currentRouteName() == 'klaim')
+    @if (Route::currentRouteName() == 'masuk' || Route::currentRouteName() == 'daftar' || Route::currentRouteName() ==
+    'klaim')
     <div id="particles-js" style="
         position: fixed;
         height: 100%;
@@ -50,6 +51,9 @@
     @yield('body')
     @else
     <div id="wrapper">
+        @if (Session::get('userLogin')->idLevel == '3')
+        @yield('anggota')
+        @else
         @include('lay.sidebar')
         <div id="content-wrapper">
             @include('lay.navbar')
@@ -57,6 +61,7 @@
                 @yield('body')
             </div>
         </div>
+        @endif
     </div>
 
 

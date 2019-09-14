@@ -153,6 +153,15 @@ class apiapi extends Controller
         return tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'desc')->get();
     }
 
+    public function terbit(Request $a)
+    {
+        tlaporan::where('id', $a->id)->update([
+            'terbit' => $a->status
+        ]);
+
+        return $a->status;
+    }
+
     /*
     \
     \ PEMASPENGE

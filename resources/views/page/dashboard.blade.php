@@ -8,7 +8,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-2">
+    <div class="d-sm-flex d-flex align-items-center justify-content-between mb-2">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
     </div>
 
@@ -55,8 +55,8 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Anggota</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span>121</span> Orang</div>
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Anggota (aktif)</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span>{{$jumlahOrang}}</span> Orang</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-user-check fa-2x text-gray-300"></i>
@@ -96,4 +96,50 @@
 <!-- Scroll to Top Button-->
 
 
+@endsection
+
+@section('anggota')
+<style>
+    .bulat{
+        border-radius: 50%;
+        height: 100px;
+        width: 100px;
+        color: whitesmoke;
+    }
+</style>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <h3 class="text-center">{{strtoupper(Session::get('userLogin')->org)}}</h3>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <h4 style="font-weight: bold">LAPORAN KEUANGAN</h4>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            @for ($i = 0; $i < 6; $i++)
+
+            <div class="col-md-6 col-xs-12 col-xl-4 p-1">
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-md-4 col-sm-12 d-flex flex-column justify-content-center align-items-center">
+                            <div class="bulat d-flex flex-column justify-content-center align-items-center bg-primary">
+                                <h4 class="m-0 p-0">10</h4>
+                                <p class="p-0 m-0">BULAN</p>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-sm-12 d-sm-flex d-flex d-md-block justify-content-center align-items-center mt-3 mt-md-0">
+                            Laporan
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between align-item-center">
+                        <a>Lihat</a>
+                        <span class="fas fa-angle-right d-flex justify-content-center"></span>
+                    </div>
+                </div>
+            </div>
+            @endfor
+        </div>
+    </div>
 @endsection

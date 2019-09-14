@@ -49,6 +49,8 @@ Route::post('/api/api/laporan/deleteDataLaporan', 'apiapi@deleteDataLaporan');
 Route::post('/api/api/laporan/addDataLaporan', 'apiapi@addDataLaporan');
 Route::get('/api/api/laporan/prepareEditLaporan/{a}', 'apiapi@prepareEditLaporan');
 Route::post('/api/api/laporan/editDataLaporan', 'apiapi@editDataLaporan');
+Route::get('/api/api/laporan/prepareEditAnggota/{a}', 'apiapi@prepareEditAnggota');
+Route::post('/api/api/laporan/terbit', 'apiapi@terbit');
 
 Route::get('/api/api/laporan/loadDataLaporan', 'apiapi@loadDataLaporan');
 
@@ -62,6 +64,5 @@ Route::post('/api/api/pemaspenge/poin/save', 'apiapi@savePoinLaporan');
 Route::get('/api/api/anggota/getDataAnggota', 'apiapi@getDataAnggota');
 Route::post('/api/api/anggota/addDataAnggota', 'apiapi@addDataAnggota');
 Route::post('/api/api/anggota/deleteDataAnggota', 'apiapi@deleteDataAnggota');
-Route::get('/api/api/laporan/prepareEditAnggota/{a}', 'apiapi@prepareEditAnggota');
 
 Route::post('/api/api/anggota/kodeKeamanan', 'apiapi@kodeKeamanan');

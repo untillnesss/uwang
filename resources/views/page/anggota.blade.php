@@ -1,6 +1,6 @@
 @extends('lay.lay')
 
-@section('title', 'DASHBOARD')
+@section('title', 'ANGGOTA')
 
 @section('meta')
     <meta name="level" content="{{$level}}">

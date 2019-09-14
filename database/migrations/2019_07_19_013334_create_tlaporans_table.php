@@ -17,6 +17,7 @@ class CreateTlaporansTable extends Migration
             $table->bigIncrements('id');
             $table->text('tanggal');
             $table->unsignedBigInteger('idUser');
+            $table->text('terbit')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

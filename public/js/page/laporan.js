@@ -24,8 +24,14 @@ var dataTableLaporan = $("#example1").DataTable({
                 btn +=
                     '<button class="btn btn-sm btn-success mr-2" onclick="editFun(' + data.id + ')"><i class="fas fa-edit"></i></button>';
 
-                btn +=
-                    '<button class="btn btn-sm btn-primary btn-icon-split pull-right" onclick="editFun(' + data.id + ')"><span class="icon"><i class="fas fa-dollar-sign"></i></span><span class="text">Buat laporan</span></button>';
+                if (data.terbit == '1') {
+                    btn +=
+                        '<button class="btn btn-sm btn-danger btn-icon-split pull-right" onclick="terbitFun(' + data.id + ', 0)"><span class="icon"><i class="fas fa-times"></i></span><span class="text">Batal Terbitkan</span></button>';
+                } else {
+                    btn +=
+                        '<button class="btn btn-sm btn-primary btn-icon-split pull-right" onclick="terbitFun(' + data.id + ', 1)"><span class="icon"><i class="fas fa-check"></i></span><span class="text">Terbitkan</span></button>';
+                }
+
                 return btn;
             }
         }
@@ -153,10 +159,34 @@ $("#btnSimpanLaporan").on("click", function () {
     }
 });
 
+function terbitFun(id, status) {
+    $.ajax({
+        url: apis + 'laporan/terbit',
+        method: 'POST',
+        data: {
+            id: id,
+            status: status
+        },
+        beforeSend: function () {
+            np()
+        },
+        success: function (data) {
+            if (data == '1') {
+                ToastSwal('Laporan berhasil diterbitkan', 'success')
+            } else {
+                ToastSwal('Laporan dibatalkan', 'success')
+            }
+            dataTableLaporan.ajax.reload()
+            np('done')
+        }
+    });
+}
+
 $('#tanggal').on('change', function () {
     var val = $(this).val()
     $('#fieldPenanggalan').html(penanggalan(val))
 })
+
 $('#tanggalEdit').on('change', function () {
     var val = $(this).val()
     $('#fieldPenanggalanEdit').html(penanggalan(val))
