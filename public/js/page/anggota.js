@@ -3,7 +3,7 @@ var dataTableAnggota = $("#example1").DataTable({
     processing: true,
     serverSide: true,
     ajax: apis + "anggota/getDataAnggota",
-    sort: false,
+    // sort: false,
     columns: [{
             data: 'nama',
             name: "nama",
@@ -144,13 +144,19 @@ function deleteFun(id) {
 }
 
 function editFun(id) {
+    localStorage.setItem('emailChange', 0)
     $.ajax({
-        url: apis + 'laporan/prepareEditAnggota/' + id,
+        url: apis + 'anggota/prepareEditAnggota/' + id,
         method: 'GET',
         beforeSend: function () {
             np()
         },
         success: function (data) {
+            if (data.status == 'acc') {
+                localStorage.setItem('editTypeAnggota', data.status)
+            } else if (data.status == 'pending') {
+                localStorage.setItem('editTypeAnggota', data.status)
+            }
             G_idAnggotaEdit = id
             var el = ''
             if (data.status == 'pending') {
@@ -171,9 +177,9 @@ function editFun(id) {
             el += '<option value="0" selected disabled>-- PILIH LEVEL --</option>'
             $.each(JSON.parse(localStorage.getItem('level')), function (i, d) {
                 if (d.id == data.idLevel) {
-                    el += '<option selected value="' + ucwords(d.nama) + '">' + ucwords(d.nama) + '</option>'
+                    el += '<option selected value="' + ucwords(d.id) + '">' + ucwords(d.nama) + '</option>'
                 } else {
-                    el += '<option value="' + ucwords(d.nama) + '">' + ucwords(d.nama) + '</option>'
+                    el += '<option value="' + ucwords(d.id) + '">' + ucwords(d.nama) + '</option>'
                 }
             })
             el += '</select>'
@@ -221,19 +227,40 @@ $("#btnTambahAnggota").on("click", function () {
 });
 
 $("#btnSimpanLaporan").on("click", function () {
-    var tanggal = $("#tanggalEdit").val();
-    var id = $("#idTanggalEdit").val();
+    var nama, email, level, data
+    var type = localStorage.getItem('editTypeAnggota')
+    var change = localStorage.getItem('emailChange')
+    if (type == 'acc') {
+        level = $('#levelEdit').val()
 
-    if (tanggal == "") {
+        data = {
+            id: G_idAnggotaEdit,
+            level: level,
+            type: type,
+            change: change
+        }
+    } else if (type == 'pending') {
+        nama = $('#namaEdit').val()
+        email = $('#emailEdit').val()
+        level = $('#levelEdit').val()
+
+        data = {
+            id: G_idAnggotaEdit,
+            nama: nama,
+            email: email,
+            level: level,
+            type: type,
+            change: change
+        }
+    }
+
+    if (data.nama == '' || data.email == '' || data.level == null) {
         ToastSwal("Harus di isi ya pak !", 'error');
     } else {
         $.ajax({
-            url: apis + "laporan/editDataLaporan",
+            url: apis + "anggota/editDataAnggota",
             method: "POST",
-            data: {
-                tanggal: tanggal,
-                id: G_idTanggalEdit
-            },
+            data: data,
             beforeSend: function () {
                 np();
             },
@@ -241,21 +268,19 @@ $("#btnSimpanLaporan").on("click", function () {
                 np('done')
                 if (d == "y") {
                     ToastSwal('Berhasil mengubah data pak!')
-                    $('#editLaporanModal').modal('hide')
-                    dataTableLaporan.ajax.reload()
+                    $('#editAnggotaModal').modal('hide')
+                    dataTableAnggota.ajax.reload()
                 } else if (d == 'x') {
-                    ToastSwal('Tanggal sudah tersedia ! tidak tersimpan', 'error')
+                    ToastSwal('Email sudah tersedia ! tidak tersimpan', 'error')
                 }
             }
         });
     }
 });
 
-$('#tanggal').on('change', function () {
-    var val = $(this).val()
-    $('#fieldPenanggalan').html(penanggalan(val))
-})
-$('#tanggalEdit').on('change', function () {
-    var val = $(this).val()
-    $('#fieldPenanggalanEdit').html(penanggalan(val))
+
+$(document).on('keyup', 'input', function () {
+    if ($(this).attr('id') == 'emailEdit') {
+        localStorage.setItem('emailChange', 1)
+    }
 })

@@ -267,6 +267,7 @@ class apiapi extends Controller
                 ->join('tlevels', 'tanggotas.idLevel', '=', 'tlevels.id')
                 ->select('tanggotas.nama', 'tanggotas.email', 'tlevels.nama as level', 'tanggotas.status', 'tanggotas.kode', 'tanggotas.id')
                 ->orderBy('idLevel', 'asc')
+                // ->orderBy('status', 'asc')
                 ->withTrashed()
                 ->get()
         )->make(true);
@@ -311,5 +312,46 @@ class apiapi extends Controller
     public function kodeKeamanan(Request $a)
     {
         return tanggota::where('id', $a->id)->select('nama', 'kode')->first();
+    }
+
+    public function editDataAnggota(Request $a)
+    {
+
+        if ($a->type == 'pending') {
+            if ($a->change == 1) {
+                $cek = tanggota::where('email', $a->email)->count();
+                $cekk = tuser::where('email', $a->email)->count();
+
+                if ($cek == 0 && $cekk == 0) {
+                    tanggota::where('id', $a->id)->update([
+                        'nama' => $a->nama,
+                        'email' => $a->email,
+                        'idLevel' => $a->level
+                    ]);
+                } else {
+                    return 'x';
+                }
+            } else {
+                tanggota::where('id', $a->id)->update([
+                    'nama' => $a->nama,
+                    'idLevel' => $a->level
+                ]);
+            }
+        } else {
+            tanggota::where('id', $a->id)->update([
+                'idLevel' => $a->level
+            ]);
+        }
+        return 'y';
+    }
+
+    public function getDataLaporanForAnggota()
+    {
+        $get = tlaporan::where([
+            'idUser' => Session::get('userLogin')->id,
+            'terbit' => 1
+        ])->select('tanggal', 'id')->get();
+
+        return response()->json($get);
     }
 }

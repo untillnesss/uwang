@@ -13,12 +13,12 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
+        <li class="nav-item @if(Route::currentRouteName() == 'dashboard') active @endif">
         <a class="nav-link" href="{{route('dashboard')}}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
-        @if (Session::get('userLogin')->idLevel == '1')
+        @if (Session::get('userLogin')->idLevel != 3)
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -29,9 +29,12 @@
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item @if(Route::currentRouteName() == 'laporan') active @endif">
             <a class="nav-link" href="{{route('laporan')}}"><i class="fas fa-file fa-fw"></i><span>Daftar Laporan</span></a>
-            <a class="nav-link" href="{{route('pemaspenge')}}"><i class="fas fa-arrow-up fa-fw"></i><span>Pemasukan & Pengeluaran</span></a>
+        </li>
+
+        <li class="nav-item @if(Route::currentRouteName() == 'pemaspenge') active @endif">
+            <a class="nav-link" href="{{route('pemaspenge')}}"><i class="fas fa-arrow-up fa-fw"></i><span>Masuk & Keluar</span></a>
         </li>
 
         @if (Session::get('userLogin')->idLevel == 1)
@@ -44,8 +47,11 @@
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item @if(Route::currentRouteName() == 'anggota') active @endif">
             <a class="nav-link" href="{{route('anggota')}}"><i class="fas fa-users fa-fw"></i><span>Anggota</span></a>
+        </li>
+
+        <li class="nav-item @if(Route::currentRouteName() == 'anggota') active @endif">
             <a class="nav-link" href="{{route('laporan')}}"><i class="fas fa-cogs fa-fw"></i><span>Pengaturan</span></a>
         </li>
         @endif

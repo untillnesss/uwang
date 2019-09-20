@@ -1,15 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 Route::get('/daftar', 'daftar@index')->name('daftar');
 Route::post('/daftar', 'daftar@daftar')->name('daftarPost');
 
@@ -17,52 +7,72 @@ Route::get('/masuk', 'masuk@index')->name('masuk');
 Route::get('/masuk/klaim', 'masuk@klaim')->name('klaim');
 Route::post('/masuk', 'masuk@masuk')->name('masukPost');
 
-Route::post('/api/api/masuk/klaim/cekEmail', 'masuk@cekEmail');
-Route::post('/api/api/masuk/klaim/cekKode', 'masuk@cekKode');
-Route::post('/api/api/masuk/klaim/storePass', 'masuk@storePass');
-Route::post('/api/api/masuk/klaim/tolak', 'masuk@tolak');
-
-
 Route::get('/keluar', 'keluar@index')->name('keluar');
 
 Route::get('/', 'index@index')->name('dashboard');
-
 Route::get('/laporan', 'laporan@index')->name('laporan');
 Route::get('/pemaspenge', 'pemaspenge@index')->name('pemaspenge');
-
 Route::get('/anggota', 'anggota@index')->name('anggota');
 
 
 // APIAPIAPIAPIAPIAPIAPIAPIAPIAPIAPIAPIAPPPPPPPPAPAPIAPIAPIPIA
 
-// SUMMARYYYY
-Route::get('/api/api/summary', 'summary@summary');
-Route::get('/api/api/pemasukanPengeluaran', 'summary@pemasukanPengeluaran');
+Route::group(['prefix' => '/api/api/'], function () {
 
-// SALDO
-Route::get('/api/api/saldo/getSaldo', 'apiapi@getSaldo');
-Route::post('/api/api/saldo/postSaldo', 'apiapi@postSaldo');
+    // DASHBOARD ANGGOTA
+    Route::get('dashboard/anggota/getDataLaporan', 'apiapi@getDataLaporanForAnggota');
 
-// LAPORAN
-Route::get('/api/api/laporan/getDataLaporan', 'apiapi@getDataLaporan');
-Route::post('/api/api/laporan/deleteDataLaporan', 'apiapi@deleteDataLaporan');
-Route::post('/api/api/laporan/addDataLaporan', 'apiapi@addDataLaporan');
-Route::get('/api/api/laporan/prepareEditLaporan/{a}', 'apiapi@prepareEditLaporan');
-Route::post('/api/api/laporan/editDataLaporan', 'apiapi@editDataLaporan');
-Route::get('/api/api/laporan/prepareEditAnggota/{a}', 'apiapi@prepareEditAnggota');
-Route::post('/api/api/laporan/terbit', 'apiapi@terbit');
+    // AUTH
+    Route::group(['prefix' => 'masuk/klaim'], function () {
 
-Route::get('/api/api/laporan/loadDataLaporan', 'apiapi@loadDataLaporan');
+        Route::post('cekEmail', 'masuk@cekEmail');
+        Route::post('cekKode', 'masuk@cekKode');
+        Route::post('storePass', 'masuk@storePass');
+        Route::post('tolak', 'masuk@tolak');
+    });
 
-// PEMASPENGE
-Route::get('/api/api/pemaspenge/laporan/{id}', 'apiapi@loadDetailLaporan');
-Route::post('/api/api/pemaspenge/poin', 'apiapi@poinLaporan');
-Route::post('/api/api/pemaspenge/poin/delete', 'apiapi@deletePoinLaporan');
-Route::post('/api/api/pemaspenge/poin/save', 'apiapi@savePoinLaporan');
+    // SUMMARYYYY
+    Route::get('summary', 'summary@summary');
+    Route::get('pemasukanPengeluaran', 'summary@pemasukanPengeluaran');
 
-// ANGGOTA
-Route::get('/api/api/anggota/getDataAnggota', 'apiapi@getDataAnggota');
-Route::post('/api/api/anggota/addDataAnggota', 'apiapi@addDataAnggota');
-Route::post('/api/api/anggota/deleteDataAnggota', 'apiapi@deleteDataAnggota');
+    // SALDO
+    Route::group(['prefix' => 'saldo'], function () {
 
-Route::post('/api/api/anggota/kodeKeamanan', 'apiapi@kodeKeamanan');
+        Route::get('getSaldo', 'apiapi@getSaldo');
+        Route::post('postSaldo', 'apiapi@postSaldo');
+    });
+
+    // LAPORAN
+    Route::group(['prefix' => 'laporan'], function () {
+
+        Route::get('getDataLaporan', 'apiapi@getDataLaporan');
+        Route::post('deleteDataLaporan', 'apiapi@deleteDataLaporan');
+        Route::post('addDataLaporan', 'apiapi@addDataLaporan');
+        Route::get('prepareEditLaporan/{a}', 'apiapi@prepareEditLaporan');
+        Route::post('editDataLaporan', 'apiapi@editDataLaporan');
+        Route::post('terbit', 'apiapi@terbit');
+
+        Route::get('loadDataLaporan', 'apiapi@loadDataLaporan');
+    });
+
+    // PEMASPENGE
+    Route::group(['prefix' => 'pemaspenge'], function () {
+
+        Route::get('laporan/{id}', 'apiapi@loadDetailLaporan');
+        Route::post('poin', 'apiapi@poinLaporan');
+        Route::post('poin/delete', 'apiapi@deletePoinLaporan');
+        Route::post('poin/save', 'apiapi@savePoinLaporan');
+    });
+
+    // ANGGOTA
+    Route::group(['prefix' => 'anggota'], function () {
+
+        Route::get('getDataAnggota', 'apiapi@getDataAnggota');
+        Route::post('addDataAnggota', 'apiapi@addDataAnggota');
+        Route::post('deleteDataAnggota', 'apiapi@deleteDataAnggota');
+        Route::get('prepareEditAnggota/{a}', 'apiapi@prepareEditAnggota');
+        Route::post('editDataAnggota', 'apiapi@editDataAnggota');
+
+        Route::post('kodeKeamanan', 'apiapi@kodeKeamanan');
+    });
+});

@@ -40,7 +40,7 @@
                                     <th>Nama</th>
                                     <th>Email</th>
                                     <th>Level</th>
-                                    <th>Status</th>
+                                    <th style="width: 10%">Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
