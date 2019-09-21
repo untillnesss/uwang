@@ -110,7 +110,10 @@ class apiapi extends Controller
 
     public function addDataLaporan(Request $a)
     {
-        $cek = tlaporan::where('tanggal', $a->tanggal)->get();
+        $cek = tlaporan::where([
+            'tanggal' => $a->tanggal,
+            'idUser' => Session::get('userLogin')->id
+        ])->get();
 
         if (count($cek) == 0) {
 
@@ -350,8 +353,53 @@ class apiapi extends Controller
         $get = tlaporan::where([
             'idUser' => Session::get('userLogin')->id,
             'terbit' => 1
-        ])->select('tanggal', 'id')->get();
+        ])->select('tanggal', 'id')->orderBy('tanggal', 'desc')->get();
 
         return response()->json($get);
+    }
+
+    public function getDetailLaporanForAnggota(tlaporan $id)
+    {
+        $laporan = tlaporan::where([
+            'id' => $id->id,
+            'idUser' => Session::get('userLogin')->id
+        ])->first();
+
+        if ($laporan == null) {
+            return abort(404);
+        }
+
+        $poin = tpoin::where('idLaporan', $id->id)->get();
+
+        $laporanSebelumnya = tlaporan::where('idUser', Session::get('userLogin')->id)->where('tanggal', '<', $laporan->tanggal)->orderBy('tanggal', 'desc')->first();
+
+        if ($laporanSebelumnya == null) {
+            $laporanSebelumnya = 'x';
+            $saldoSebelumnya = tsaldo::where([
+                'idUser' => Session::get('userLogin')->id,
+                'idLaporan' => 0
+            ])->first()->jumlah;
+        } else {
+            $saldoSebelumnya = tsaldo::whereDate('created_at', $laporanSebelumnya->created_at)->where('idUser', Session::get('userLogin')->id)->orderBy('created_at', 'desc')->first()->jumlah;
+            $laporanSebelumnya = $laporanSebelumnya->tanggal;
+        }
+
+        $saldoSaatIni = tsaldo::whereDate('created_at', $laporan->tanggal)->where('idUser', Session::get('userLogin')->id)->orderBy('created_at', 'desc')->first();
+
+        $pemasukan = 0;
+        $pengeluaran = 0;
+
+        foreach ($poin as $p) {
+            switch ($p->jenis) {
+                case '+':
+                    $pemasukan = $pemasukan + $p->jumlah;
+                    break;
+                case '-':
+                    $pengeluaran = $pengeluaran + $p->jumlah;
+                    break;
+            }
+        }
+
+        return response()->json([$id, $poin, [$pemasukan, $pengeluaran], [$laporanSebelumnya, $saldoSebelumnya, $saldoSaatIni->jumlah]]);
     }
 }

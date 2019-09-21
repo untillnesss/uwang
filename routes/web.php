@@ -21,6 +21,7 @@ Route::group(['prefix' => '/api/api/'], function () {
 
     // DASHBOARD ANGGOTA
     Route::get('dashboard/anggota/getDataLaporan', 'apiapi@getDataLaporanForAnggota');
+    Route::get('dashboard/anggota/getDetailLaporan/{id}', 'apiapi@getDetailLaporanForAnggota');
 
     // AUTH
     Route::group(['prefix' => 'masuk/klaim'], function () {

@@ -107,7 +107,7 @@ function penanggalan(
     date,
     hari = false,
     bulan = false,
-    tahun = false
+    tahun = false,
 ) {
     var dateD = new Date(date)
 
@@ -136,15 +136,19 @@ function penanggalan(
         'Desember'
     ]
     var harihari = AHari[dateD.getDay()]
-    var bulan = ABulan[dateD.getMonth()]
+    var bulanbulan = ABulan[dateD.getMonth()]
     var tahun = dateD.getUTCFullYear()
 
     if (hari == true) {
         return harihari
     }
 
+    if (bulan == true) {
+        return bulanbulan
+    }
+
     if (dateD != 'Invalid Date') {
-        return harihari + ', ' + dateD.getDate() + ' ' + bulan + ' ' + tahun;
+        return harihari + ', ' + dateD.getDate() + ' ' + bulanbulan + ' ' + tahun;
     } else {
         return 'Masukkan tanggal dengan benar'
     }

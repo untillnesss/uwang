@@ -73,6 +73,6 @@ class summary extends Controller
             $index++;
         }
 
-        return response()->json($res);
+        return $res;
     }
 }

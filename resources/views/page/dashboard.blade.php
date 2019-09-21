@@ -112,7 +112,7 @@
 
     </style>
     <div class="container mt-4">
-        <div class="row">
+        <div class="row mt-5">
             <div class="col-12 d-flex justify-content-center">
                 <h3 class="text-center">{{strtoupper(Session::get('userLogin')->org)}}</h3>
             </div>
@@ -121,7 +121,7 @@
             </div>
         </div>
 
-        <div class="row mt-5" id="loading">
+        <div class="row mt-4" id="loading">
             <div class="col-12 p-1">
                 <div class="card py-3 d-flex justify-content-center align-items-center">
                     <div class="spinner-grow text-primary" role="status"></div>
@@ -129,30 +129,69 @@
             </div>
         </div>
 
-        <div class="row mt-5" id="fieldCardLaporan" style="display:none">
-            @for ($i = 0; $i < 6; $i++)
-            <div class="col-md-6 col-xs-12 col-xl-4 p-1">
-                <div class="card">
-                    <div class="card-body row">
-                        <div class="col-md-4 col-sm-12 d-flex flex-column justify-content-center align-items-center">
-                            <div class="bulat d-flex flex-column justify-content-center align-items-center bg-primary">
-                                <h4 class="m-0 p-0">10</h4>
-                                <p class="p-0 m-0">BULAN</p>
-                            </div>
-                        </div>
-                        <div
-                            class="col-md-8 col-sm-12 d-sm-flex d-flex d-md-block justify-content-center align-items-center mt-3 mt-md-0">
-                            Laporan
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between align-item-center">
-                        <a>Lihat</a>
-                        <span class="fas fa-angle-right d-flex justify-content-center"></span>
-                    </div>
-                </div>
+        <div class="row mt-4" style="display:none" id="tableLaporan">
+            <div class="col-12 mb-2">
+                <table>
+                    <tr>
+                        <td class="pr-3">Tanggal Laporan</td>
+                        <td style="text-align: right" class="pr-1">:</td>
+                        <td id="tanggalLaporan">Tanggal</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-12 table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%">No</th>
+                            <th style="width: 50%">Keterangan</th>
+                            <th style="width: 5%" class="text-center">Banyak</th>
+                            <th style="width: 10%">Harga</th>
+                            <th style="width: 20%">Debit (+)</th>
+                            <th style="width: 20%">Kredit (-)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="isiPoinLaporan"></tbody>
+                    <thead>
+                        <tr>
+                            <th colspan="4">Jumlah</th>
+                            <th id="debit">JUMALH</th>
+                            <th id="kredit">JUMALH</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Total</th>
+                            <th colspan="2" class="total">INI</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="col-12 table-responsive">
+                <table class="table table-hover table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>Sisa saldo laporan sebelumnya (<span id="tanggalSebelum"></span>)</td>
+                            <td id="saldoSebelum"></td>
+                        </tr>
+                        <tr>
+                            <td>Perubahan saldo saat ini</td>
+                            <td class="total">ini</td>
+                        </tr>
+                        <tr>
+                            <td>Saldo saat ini</td>
+                            <td id="saldoSaatIni">ini</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        @endfor
+
+        <div class="row mt-4" id="fieldCardLaporan" style="display:none;"></div>
     </div>
+
+    <nav class="navbar navbar-light bg-dark fixed-top" id="myNav" style="display: none">
+
+    </nav>
 </div>
 
 @section('js')
