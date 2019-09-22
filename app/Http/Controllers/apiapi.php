@@ -10,6 +10,7 @@ use Yajra\DataTables\Contracts\DataTable;
 use App\tlaporan;
 use Yajra\DataTables\DataTables;
 use App\tpoin;
+use App\tsaran;
 use App\tuser;
 use Carbon\Traits\Timestamp;
 use RangeException;
@@ -407,5 +408,18 @@ class apiapi extends Controller
         }
 
         return response()->json([$id, $poin, [$pemasukan, $pengeluaran], [$laporanSebelumnya, $saldoSebelumnya, $saldoSaatIni->jumlah]]);
+    }
+
+    public function saranBug(Request $a)
+    {
+        tsaran::create($a->all());
+    }
+
+    public function saranBugshow($key)
+    {
+        if ($key  == 'untillness') {
+            return tsaran::orderBy('created_at', 'desc')->get();
+        }
+        return abort(404);
     }
 }

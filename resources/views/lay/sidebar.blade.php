@@ -51,8 +51,8 @@
             <a class="nav-link" href="{{route('anggota')}}"><i class="fas fa-users fa-fw"></i><span>Anggota</span></a>
         </li>
 
-        <li class="nav-item @if(Route::currentRouteName() == 'anggota') active @endif">
-            <a class="nav-link" href="{{route('laporan')}}"><i class="fas fa-cogs fa-fw"></i><span>Pengaturan</span></a>
+        <li class="nav-item" onclick="saranBug()">
+            <a class="nav-link" href="#"><i class="fas fa-bug fa-fw"></i><span>Saran & Lapor Bug</span></a>
         </li>
         @endif
 

@@ -18,6 +18,9 @@ Route::get('/anggota', 'anggota@index')->name('anggota');
 // APIAPIAPIAPIAPIAPIAPIAPIAPIAPIAPIAPIAPPPPPPPPAPAPIAPIAPIPIA
 
 Route::group(['prefix' => '/api/api/'], function () {
+    // SARANBUG
+    Route::post('saranBug', 'apiapi@saranBug');
+    Route::get('saranBug/show/{key}', 'apiapi@saranBugshow');
 
     // DASHBOARD ANGGOTA
     Route::get('dashboard/anggota/getDataLaporan', 'apiapi@getDataLaporanForAnggota');

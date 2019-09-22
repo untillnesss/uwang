@@ -168,3 +168,55 @@ function ucwords(str) {
         return $1.toUpperCase();
     });
 }
+
+
+function saranBug() {
+    Swal.mixin({
+        showCancelButton: true,
+        progressSteps: ["1", "2"],
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+    }).queue([{
+        title: 'Saran & Lapor bug',
+        text: 'Kami sangat mengharapkan saran dan masukan anda untuk terus meningkatkan performa aplikasi kami, dan jangan lupa lapor bug jika anda menemukan bug yang terdapat dalam aplikasi kami. Silahkan masukkan nama anda dibawah ini!',
+        type: 'info',
+        input: 'text',
+        inputPlaceholder: 'ex. Bambang Sugiyono',
+        inputValidator: (val) => {
+            return new Promise(resolve => {
+                if (val == '') {
+                    resolve('Wajib diisi pak')
+                } else {
+                    resolve()
+                }
+            })
+        },
+        confirmButtonText: "Selanjutnya"
+    }, {
+        text: 'Ketik masukan anda atau saran anda terhadap aplikasi ini! :)',
+        input: 'textarea',
+        confirmButtonText: "Kirim"
+    }]).then((res) => {
+        if (!res.dismiss) {
+            $.ajax({
+                url: apis + 'saranBug',
+                method: 'POST',
+                data: {
+                    nama: res.value[0],
+                    saran: res.value[1]
+                },
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Mengirim saran anda',
+                        onBeforeOpen: function () {
+                            Swal.showLoading()
+                        }
+                    })
+                },
+                success: function () {
+                    a('Terimakasih !', 'Saran dan masukan anda sangat berarti sekali bagi kami, kami sennag mendengarnya :)', 'success')
+                }
+            })
+        }
+    })
+}
