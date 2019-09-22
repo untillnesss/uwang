@@ -94,7 +94,6 @@ function detail(id) {
                     np();
                 },
                 success: function (data) {
-                    console.log(data)
                     genereateButtonNav("all");
                     np("done");
                     $("#loading").slideUp(function () {

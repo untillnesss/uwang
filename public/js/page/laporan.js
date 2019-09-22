@@ -171,12 +171,16 @@ function terbitFun(id, status) {
             np()
         },
         success: function (data) {
-            if (data == '1') {
-                ToastSwal('Laporan berhasil diterbitkan', 'success')
+            if (data == 'x') {
+                a('Gagal !', 'Laporan ini masih kosong, tidak bisa di terbitkan. Silahkan isi terlebih dahulu pak', 'error')
             } else {
-                ToastSwal('Laporan dibatalkan', 'success')
+                if (data == '1') {
+                    ToastSwal('Laporan berhasil diterbitkan', 'success')
+                } else {
+                    ToastSwal('Laporan dibatalkan', 'success')
+                }
+                dataTableLaporan.ajax.reload()
             }
-            dataTableLaporan.ajax.reload()
             np('done')
         }
     });

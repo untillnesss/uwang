@@ -36,11 +36,26 @@
             background-color: rgba(28, 200, 138, 0.15);
         }
 
+        .banner-beta {
+            background-color: crimson;
+            position: absolute;
+            transform: rotate(-45deg);
+            margin-top:30px;
+            margin-left: -55px;
+            width: 200px;
+            z-index: 100009;
+            opacity: 0.3;
+        }
+
     </style>
 
 </head>
 
 <body id="page-top" class="@yield('classBody')">
+    <div class="banner-beta text-white text-center">
+        BETA TESTER
+    </div>
+
     @if (Route::currentRouteName() == 'masuk' || Route::currentRouteName() == 'daftar' || Route::currentRouteName() ==
     'klaim')
     <div id="particles-js" style="

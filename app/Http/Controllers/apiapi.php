@@ -158,11 +158,17 @@ class apiapi extends Controller
 
     public function terbit(Request $a)
     {
-        tlaporan::where('id', $a->id)->update([
-            'terbit' => $a->status
-        ]);
+        $cek = tpoin::where('idLaporan', $a->id)->get();
 
-        return $a->status;
+        if (count($cek) > 0) {
+            tlaporan::where('id', $a->id)->update([
+                'terbit' => $a->status
+            ]);
+
+            return $a->status;
+        } else {
+            return 'x';
+        }
     }
 
     /*
