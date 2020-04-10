@@ -51,9 +51,9 @@
             <a class="nav-link" href="{{route('anggota')}}"><i class="fas fa-users fa-fw"></i><span>Anggota</span></a>
         </li>
 
-        <li class="nav-item" onclick="saranBug()">
+        {{-- <li class="nav-item" onclick="saranBug()">
             <a class="nav-link" href="#"><i class="fas fa-bug fa-fw"></i><span>Saran & Lapor Bug</span></a>
-        </li>
+        </li> --}}
         @endif
 
         @endif

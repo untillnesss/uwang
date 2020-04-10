@@ -1,3 +1,28 @@
+@php
+
+function substrwords($text, $maxchar, $end = '...')
+{
+    if (strlen($text) > $maxchar || $text == '') {
+        $words = preg_split('/\s/', $text);
+        $output = '';
+        $i      = 0;
+        while (1) {
+            $length = strlen($output) + strlen($words[$i]);
+            if ($length > $maxchar) {
+                break;
+            } else {
+                $output .= " " . $words[$i];
+                ++$i;
+            }
+        }
+        $output .= $end;
+    } else {
+        $output = $text;
+    }
+    return $output;
+}
+
+@endphp
 <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-3 static-top shadow">
 
@@ -94,7 +119,7 @@
                     </li> --}}
 
                     <!-- Nav Item - Messages -->
-                    <li class="nav-item dropdown no-arrow mx-1">
+                    {{-- <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-envelope fa-fw"></i>
@@ -157,7 +182,7 @@
                             </a>
                             <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                         </div>
-                    </li>
+                    </li> --}}
 
                     <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -165,13 +190,13 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{Session::get('userLogin')->nama}}</span>
-                            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                            <span class="mr-4 d-none d-lg-inline text-gray-600 small">{{substrwords(Session::get('userLogin')->nama, 15, '...')}}</span>
+                            <img class="img-profile rounded-circle" src="{{asset('img/user.png')}}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                             aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
+                            {{-- <a class="dropdown-item" href="#">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </a>
@@ -179,7 +204,7 @@
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Pengaturan
                             </a>
-                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-divider"></div> --}}
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Keluar
