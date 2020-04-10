@@ -9,5 +9,5 @@ class tlaporan extends Model
 {
     //
     // use SoftDeletes;
-    protected $fillable = ['tanggal', 'idUser'];
+    protected $fillable = ['tanggal', 'idUser', 'terbit'];
 }

@@ -120,7 +120,8 @@ class apiapi extends Controller
 
             tlaporan::create([
                 'tanggal' => $a->tanggal,
-                'idUser' => Session::get('userLogin')->id
+                'idUser' => Session::get('userLogin')->id,
+                'terbit' => 1
             ]);
 
             return 'y';
