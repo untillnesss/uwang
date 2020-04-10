@@ -52,7 +52,7 @@
 </head>
 
 <body id="page-top" class="@yield('classBody')">
-    <div class="banner-beta text-white text-center">
+    <div class="banner-beta text-white text-center d-none">
         BETA TESTER
     </div>
 
