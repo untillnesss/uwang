@@ -97,7 +97,7 @@ class apiapi extends Controller
     public function getDataLaporan()
     {
         return DataTables::of(
-            tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'desc')->get()
+            tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'asc')->get()
         )->make(true);
     }
 
@@ -155,7 +155,7 @@ class apiapi extends Controller
 
     public function loadDataLaporan()
     {
-        return tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'desc')->get();
+        return tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'asc')->get();
     }
 
     public function terbit(Request $a)
@@ -361,7 +361,7 @@ class apiapi extends Controller
         $get = tlaporan::where([
             'idUser' => Session::get('userLogin')->id,
             'terbit' => 1
-        ])->select('tanggal', 'id')->orderBy('tanggal', 'desc')->get();
+        ])->select('tanggal', 'id')->orderBy('tanggal', 'asc')->get();
 
         return response()->json($get);
     }
