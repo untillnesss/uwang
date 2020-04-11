@@ -34,6 +34,7 @@
                             <thead>
                                 <tr>
                                     <th>Hari, tanggal</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>

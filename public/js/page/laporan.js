@@ -14,6 +14,22 @@ var dataTableLaporan = $("#example1").DataTable({
         },
         {
             data: null,
+            name: "status",
+            width: "5%",
+            render: function (data) {
+                var pill = "";
+                if (data.terbit == 1) {
+                    pill +=
+                        '<div class="badge badge-primary">Diterbitkan</div>';
+                } else {
+                    pill += '<div class="badge badge-secondary">Pending</div>';
+                }
+
+                return pill;
+            },
+        },
+        {
+            data: null,
             name: "aksi",
             width: "30%",
             render: function (data) {
@@ -22,10 +38,10 @@ var dataTableLaporan = $("#example1").DataTable({
                     '<button class="btn btn-sm btn-danger mr-2" onclick="deleteFun(' +
                     data.id +
                     ')"><i class="fas fa-trash"></i></button>';
-                btn +=
-                    '<button class="btn btn-sm btn-success mr-2" onclick="editFun(' +
-                    data.id +
-                    ')"><i class="fas fa-edit"></i></button>';
+                // btn +=
+                //     '<button class="btn btn-sm btn-success mr-2" onclick="editFun(' +
+                //     data.id +
+                //     ')"><i class="fas fa-edit"></i></button>';
 
                 // if (data.terbit == '1') {
                 //     btn +=
@@ -42,15 +58,15 @@ var dataTableLaporan = $("#example1").DataTable({
 });
 
 $(() => {
-    // loadDataLaporan();
     $("#fieldPenanggalan").html(penanggalan($("#tanggal").val()));
     $("#fieldPenanggalanEdit").html(penanggalan($("#tanggalEdit").val()));
 });
 
 function deleteFun(id) {
     Swal.fire({
-        title: "Perinngatan !",
-        text: "Apakah anda yakin ingin menghapus data tersebut .?",
+        title: "Peringatan !",
+        text:
+            "Menghapus 1 laporan akan berdampak dengan laporan yang lainnya, yang akan menghapus laporan yang telah ditulis setelah laporan ini. Apakah anda yakin ingin menghapus data tersebut .?",
         type: "question",
         showCancelButton: true,
         confirmButtonText: "Yes",
@@ -118,12 +134,12 @@ $("#btnTambahLaporan").on("click", function () {
             },
             success: function (d) {
                 np("done");
-                if (d == "y") {
-                    ToastSwal("Berhasil menambahkan data pak!");
+                if (d.type == "y") {
+                    ToastSwal(d.msg);
                     $("#tambahLaporanModal").modal("hide");
                     dataTableLaporan.ajax.reload();
-                } else if (d == "x") {
-                    ToastSwal("Tanggal sudah tersedia !", "error");
+                } else if (d.type == "x") {
+                    ToastSwal(d.msg, "error");
                 }
             },
         });

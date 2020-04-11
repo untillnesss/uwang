@@ -38,11 +38,28 @@ function templateAccLaporan(data) {
         tmp += "</div>";
         tmp += "</div>";
         tmp +=
-            '<div class="card-footer"><div class="row"><div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between"><button class="btn btn-success btn-sm" onclick="goToLaporan(\'' +
-            d.tanggal +
-            "', '" +
-            d.id +
-            '\')">Kelola Laporan</button></div></div></div>';
+            '<div class="card-footer"><div class="row"><div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between">';
+        if (d.terbit != 1) {
+            tmp +=
+                '<button class="btn btn-success btn-sm" onclick="goToLaporan(\'' +
+                d.tanggal +
+                "', '" +
+                d.id +
+                "')\">Kelola Laporan</button>";
+        }
+        if (d.terbit == "1") {
+            tmp +=
+                '<span></span><div class="btn btn-sm btn-success btn-icon-split pull-right"><span class="icon"><i class="fas fa-check"></i></span><span class="text">Diterbitkan</span></div>';
+        } else {
+            var opt = d.poin == 0 ? "disabled" : "";
+            tmp +=
+                '<button class="btn btn-sm btn-primary btn-icon-split pull-right" ' +
+                opt +
+                ' onclick="terbitFun(' +
+                d.id +
+                ', 1)"><span class="icon"><i class="fas fa-check"></i></span><span class="text">Terbitkan Laporan</span></button>';
+        }
+        tmp += "</div></div></div>";
         tmp += "</div>";
         tmp += "</div>";
 
@@ -76,7 +93,7 @@ function loadDataLaporan() {
                 $("#idDaftarLaporan").empty();
             }
             np("done");
-        }
+        },
     });
 }
 
@@ -102,7 +119,6 @@ $(document).on("click", "a", function () {
                             notice += "</div>";
                             notice += "</div>";
                             $("#noticeAccLaporan" + id + "").html(notice);
-
                         } else {
                             $("#cardBodyAccLaporan" + id + "").empty();
                             var tmp = "";
@@ -121,17 +137,26 @@ $(document).on("click", "a", function () {
                             tmp += "</tbody>";
                             tmp += "</table>";
 
-                            tmp += '<div class="row d-flex justify-content-end"><div class="col-sm-6 col-md-6 col-lg-6 pull-right">'
-                            tmp += '<table class="table table-stripped">'
-                            tmp += '<tr><th>Pemasukan</th><th>Pengeluaran</th><th>Jumlah</th></tr>'
-                            tmp += '<tr><td>Rp. ' + writeSummary('+', data) + '</td><td>Rp. ' + writeSummary('-', data) + '</td><td>Rp. ' + writeSummary('total', data) + '</td></tr>'
-                            tmp += '</table>'
-                            tmp += '</div></div>'
+                            tmp +=
+                                '<div class="row d-flex justify-content-end"><div class="col-sm-6 col-md-6 col-lg-6 pull-right">';
+                            tmp += '<table class="table table-stripped">';
+                            tmp +=
+                                "<tr><th>Pemasukan</th><th>Pengeluaran</th><th>Jumlah</th></tr>";
+                            tmp +=
+                                "<tr><td>Rp. " +
+                                writeSummary("+", data) +
+                                "</td><td>Rp. " +
+                                writeSummary("-", data) +
+                                "</td><td>Rp. " +
+                                writeSummary("total", data) +
+                                "</td></tr>";
+                            tmp += "</table>";
+                            tmp += "</div></div>";
                             $("#cardBodyAccLaporan" + id + "").html(tmp);
                         }
                     }, lama);
                     ini.attr("data-load", true);
-                }
+                },
             });
         }
     }
@@ -143,7 +168,7 @@ function goToLaporan(tgl, idLaporan) {
         url: apis + "pemaspenge/poin",
         method: "POST",
         data: {
-            id: idLaporan
+            id: idLaporan,
         },
         beforeSend: function () {
             np();
@@ -169,7 +194,7 @@ function goToLaporan(tgl, idLaporan) {
             $("#summaryPengeluaran").html(writeSummary("-"));
             $("#summaryTotal").html(writeSummary("total"));
             // $("#summarySaldoSebelum").html(writeSummary("saldoSebelum"));
-        }
+        },
     });
 }
 
@@ -184,14 +209,16 @@ function closeDetailMode() {
 }
 
 function controllerFieldPoinLaporan(
-    data = [{
-        id: "0",
-        jenis: "",
-        nama: "",
-        banyak: "1",
-        harga: "",
-        jumlah: ""
-    }]
+    data = [
+        {
+            id: "0",
+            jenis: "",
+            nama: "",
+            banyak: "1",
+            harga: "",
+            jumlah: "",
+        },
+    ]
 ) {
     var dleng = data.length;
 
@@ -394,15 +421,15 @@ function deletePoin(index, id, idLaporanDelete) {
         title: "Peringatan !",
         text: "Apakah anda yakin ingin menghapus poin ini .?",
         type: "question",
-        showCancelButton: true
-    }).then(res => {
+        showCancelButton: true,
+    }).then((res) => {
         if (res.value) {
             $.ajax({
                 url: apis + "pemaspenge/poin/delete",
                 method: "POST",
                 data: {
                     id: id,
-                    idLaporan: idLaporanDelete
+                    idLaporan: idLaporanDelete,
                 },
                 beforeSend: function () {
                     np();
@@ -426,7 +453,7 @@ function deletePoin(index, id, idLaporanDelete) {
                     // $("#summarySaldoSebelum").html(
                     //     writeSummary("saldoSebelum")
                     // );
-                }
+                },
             });
         }
     });
@@ -441,7 +468,7 @@ function addPoin() {
         nama: "",
         banyak: "1",
         harga: "",
-        jumlah: ""
+        jumlah: "",
     };
     data.push(newData);
     localStorage.setItem("poinLaporan", JSON.stringify(data));
@@ -558,9 +585,9 @@ function savePoinLaporan() {
             data: {
                 idLaporan: G_idLaporan,
                 poin: JSON.parse(localStorage.getItem("poinLaporan")),
-                masuk: localStorage.getItem('+'),
-                keluar: localStorage.getItem('-'),
-                total: localStorage.getItem('total'),
+                masuk: localStorage.getItem("+"),
+                keluar: localStorage.getItem("-"),
+                total: localStorage.getItem("total"),
             },
             beforeSend: function () {
                 Swal.fire({
@@ -569,7 +596,7 @@ function savePoinLaporan() {
                     onBeforeOpen: () => {
                         Swal.showLoading();
                     },
-                    allowOutsideClick: false
+                    allowOutsideClick: false,
                 });
             },
             success: () =>
@@ -577,18 +604,20 @@ function savePoinLaporan() {
                     title: "Berhasil !",
                     text: "Berhasil menyimpan poin !",
                     type: "success",
-                    allowOutsideClick: false
-                }).then(res => {
+                    allowOutsideClick: false,
+                }).then((res) => {
                     if (res.value) {
                         window.location.reload();
                     }
-                })
+                }),
         });
     }
 }
 
-function writeSummary(type = "", data = JSON.parse(localStorage.getItem("poinLaporan"))) {
-
+function writeSummary(
+    type = "",
+    data = JSON.parse(localStorage.getItem("poinLaporan"))
+) {
     var hasil = 0;
     var isNegative = false;
 
@@ -618,7 +647,6 @@ function writeSummary(type = "", data = JSON.parse(localStorage.getItem("poinLap
         if (String(hasil).charAt(0) == "-") {
             isNegative = true;
         }
-
     } else if (type == "saldoSebelum") {
         $.ajax({
             url: apis + "saldo/getSaldo",
@@ -629,7 +657,7 @@ function writeSummary(type = "", data = JSON.parse(localStorage.getItem("poinLap
             success: function (data) {
                 np("done");
                 hasil = data["jumlah"];
-            }
+            },
         });
     } else {
         var filteran = data.filter(function (d) {
@@ -641,7 +669,7 @@ function writeSummary(type = "", data = JSON.parse(localStorage.getItem("poinLap
         });
     }
 
-    localStorage.setItem(type, hasil)
+    localStorage.setItem(type, hasil);
 
     return isNegative ? "-" + formatRupiah(hasil) : formatRupiah(hasil);
 }
@@ -650,3 +678,34 @@ $(() => {
     loadDataLaporan();
     // writeSummary();
 });
+
+function terbitFun(id, status) {
+    $.ajax({
+        url: apis + "laporan/terbit",
+        method: "POST",
+        data: {
+            id: id,
+            status: status,
+        },
+        beforeSend: function () {
+            np();
+        },
+        success: function (data) {
+            if (data == "x") {
+                a(
+                    "Gagal !",
+                    "Laporan ini masih kosong, tidak bisa di terbitkan. Silahkan isi terlebih dahulu pak",
+                    "error"
+                );
+            } else {
+                if (data == "1") {
+                    ToastSwal("Laporan berhasil diterbitkan", "success");
+                } else {
+                    ToastSwal("Laporan dibatalkan", "success");
+                }
+            }
+            np("done");
+            loadDataLaporan();
+        },
+    });
+}

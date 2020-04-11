@@ -13,6 +13,7 @@ use App\tpoin;
 use App\tsaran;
 use App\tuser;
 use Carbon\Traits\Timestamp;
+use Illuminate\Support\Facades\DB;
 use RangeException;
 
 function writeSaldo()
@@ -116,17 +117,44 @@ class apiapi extends Controller
             'idUser' => Session::get('userLogin')->id
         ])->get();
 
+
         if (count($cek) == 0) {
+            $cek = tlaporan::where('tanggal', '>', $a->tanggal)->where('idUser', Session::get('userLogin')->id)->count();
 
-            tlaporan::create([
-                'tanggal' => $a->tanggal,
-                'idUser' => Session::get('userLogin')->id,
-                'terbit' => 1
-            ]);
+            if ($cek == 0) {
+                $cek = tlaporan::where([
+                    'terbit' => '0',
+                    'idUser' => Session::get('userLogin')->id
+                ])->count();
 
-            return 'y';
+                if ($cek == 0) {
+                    tlaporan::create([
+                        'tanggal' => $a->tanggal,
+                        'idUser' => Session::get('userLogin')->id,
+                        'terbit' => 0
+                    ]);
+
+                    return response()->json([
+                        'type' => 'y',
+                        'msg' => 'Berhasil menambah laporan.'
+                    ]);
+                } else {
+                    return response()->json([
+                        'type' => 'x',
+                        'msg' => 'Ada laporan yang masih belom anda terbitkan, terbitkan terlebih dahulu !'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'type' => 'x',
+                    'msg' => 'Tidak bisa membuat laporan dengan tanggal yang mundur !'
+                ]);
+            }
         } else {
-            return 'x';
+            return response()->json([
+                'type' => 'x',
+                'msg' => 'Laporan dengan tanggal tersebut sudah ada !'
+            ]);
         }
     }
 
@@ -155,7 +183,29 @@ class apiapi extends Controller
 
     public function loadDataLaporan()
     {
-        return tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'asc')->get();
+        $res = collect();
+        // $query = DB::select('select tlaporans.*, tpoins.id as idPoin from tlaporans left join tpoins on tlaporans.id = tpoins.idLaporan where tlaporans.idUser = ' . Session::get('userLogin')->id);
+        $laporan = tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'asc')->get();
+        foreach ($laporan as $lapo) {
+            $poin = tpoin::where([
+                'idUser' => Session::get('userLogin')->id,
+                'idLaporan' => $lapo->id
+            ])->count();
+
+            // dd($lapo);
+            $res->push([
+                'id' => $lapo->id,
+                'tanggal' => $lapo->tanggal,
+                'idUser' => $lapo->idUser,
+                'terbit' => $lapo->terbit,
+                'created_at' => $lapo->created_at,
+                'updated_at' => $lapo->updated_at,
+                'deleted_at' => $lapo->deleted_at,
+                'poin' => $poin
+            ]);
+        }
+        return $res;
+        // return tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'asc')->get();
     }
 
     public function terbit(Request $a)
@@ -181,6 +231,7 @@ class apiapi extends Controller
 
     public function loadDetailLaporan($id)
     {
+
         return tpoin::where([
             'idLaporan' => $id,
             'idUser' => Session::get('userLogin')->id
@@ -209,6 +260,7 @@ class apiapi extends Controller
 
     public function savePoinLaporan(Request $a)
     {
+        // LANJUT garap maneh
         $saldoAwal = tsaldo::where([
             'idUser' => Session::get('userLogin')->id,
             'idLaporan' => 0
