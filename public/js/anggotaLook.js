@@ -76,7 +76,7 @@ function getLaporan() {
                 $("#fieldCardLaporan").slideDown();
             });
             np("done");
-        }
+        },
     });
 }
 
@@ -97,37 +97,60 @@ function detail(id) {
                     genereateButtonNav("all");
                     np("done");
                     $("#loading").slideUp(function () {
-                        $('#tanggalLaporan').html(' ' + penanggalan(data[0].tanggal))
-                        var isiTable = ''
+                        $("#tanggalLaporan").html(
+                            " " + penanggalan(data[0].tanggal)
+                        );
+                        var isiTable = "";
                         $.each(data[1], function (i, d) {
-                            isiTable += '<tr>' +
-                                '<td>' + parseInt(i + 1) + '</td>' +
-                                '<td>' + d.nama + '</td>' +
-                                '<td class="text-center">' + d.banyak + '</td>' +
-                                '<td>' + formatRupiah(d.harga) + '</td>'
-                            if (d.jenis == '+') {
-                                isiTable += '<td>' + formatRupiah(d.jumlah) + '</td>' +
-                                    '<td></td>'
+                            isiTable +=
+                                "<tr>" +
+                                "<td>" +
+                                parseInt(i + 1) +
+                                "</td>" +
+                                "<td>" +
+                                d.nama +
+                                "</td>" +
+                                '<td class="text-center">' +
+                                d.banyak +
+                                "</td>" +
+                                "<td>" +
+                                formatRupiah(d.harga) +
+                                "</td>";
+                            if (d.jenis == "+") {
+                                isiTable +=
+                                    "<td>" +
+                                    formatRupiah(d.jumlah) +
+                                    "</td>" +
+                                    "<td></td>";
                             } else {
-                                isiTable += '<td></td>' +
-                                    '<td>' + formatRupiah(d.jumlah) + '</td>'
+                                isiTable +=
+                                    "<td></td>" +
+                                    "<td>" +
+                                    formatRupiah(d.jumlah) +
+                                    "</td>";
                             }
-                            isiTable += '</tr>'
-                        })
-                        $('#isiPoinLaporan').html(isiTable)
-                        $('#debit').html(formatRupiah(data[2][0]))
-                        $('#kredit').html(formatRupiah(data[2][1]))
+                            isiTable += "</tr>";
+                        });
+                        $("#isiPoinLaporan").html(isiTable);
+                        $("#debit").html(formatRupiah(data[2][0]));
+                        $("#kredit").html(formatRupiah(data[2][1]));
 
-                        var total = parseInt(data[2][0] - data[2][1])
+                        var total = parseInt(data[2][0] - data[2][1]);
 
-                        total < 0 ? $('.total').html('-' + formatRupiah(total)) : $('.total').html(formatRupiah(total))
+                        total < 0
+                            ? $(".total").html("-" + formatRupiah(total))
+                            : $(".total").html(formatRupiah(total));
 
-                        data[3][0] == 'x' ? $('#tanggalSebelum').html('Ini adalah laporan paling awal') : $('#tanggalSebelum').html(penanggalan(data[3][0]))
-                        $('#saldoSebelum').html(data[3][1])
-                        $('#saldoSaatIni').html(data[3][2])
+                        data[3][0] == "x"
+                            ? $("#tanggalSebelum").html("Saldo Awal")
+                            : $("#tanggalSebelum").html(
+                                  penanggalan(data[3][0])
+                              );
+                        $("#saldoSebelum").html(formatRupiah(data[3][1]));
+                        $("#saldoSaatIni").html(formatRupiah(data[3][2]));
                         $("#tableLaporan").slideDown();
                     });
-                }
+                },
             });
         });
     });

@@ -321,7 +321,7 @@ class apiapi extends Controller
         if (count($ambilSaldo) > 0) {
             tsaldo::where('created_at', 'like', '%' . date('Y-m-d') . '%')->where([
                 'idUser' => Session::get('userLogin')->id,
-                'idLaporan' => null
+                'idLaporan' => $a->idLaporan,
             ])->update([
                 'jumlah' => $saldo
             ]);
@@ -453,11 +453,13 @@ class apiapi extends Controller
                 'idLaporan' => 0
             ])->first()->jumlah;
         } else {
-            $saldoSebelumnya = tsaldo::whereDate('created_at', $laporanSebelumnya->created_at)->where('idUser', Session::get('userLogin')->id)->orderBy('created_at', 'desc')->first()->jumlah;
+            // $saldoSebelumnya = tsaldo::whereDate('created_at', $laporanSebelumnya->created_at)->where('idUser', Session::get('userLogin')->id)->orderBy('created_at', 'asc')->first()->jumlah;
+            $saldoSebelumnya = tsaldo::where('idUser', Session::get('userLogin')->id)->where('idLaporan', '<', $id->id)->orderBy('idLaporan', 'desc')->first()->jumlah;
             $laporanSebelumnya = $laporanSebelumnya->tanggal;
         }
 
-        $saldoSaatIni = tsaldo::whereDate('created_at', $laporan->tanggal)->where('idUser', Session::get('userLogin')->id)->orderBy('created_at', 'desc')->first();
+        // $saldoSaatIni = tsaldo::whereDate('created_at', $laporan->tanggal)->where('idUser', Session::get('userLogin')->id)->orderBy('created_at', 'desc')->first();
+        $saldoSaatIni = tsaldo::where(['idUser' => Session::get('userLogin')->id, 'idLaporan' => $id->id])->first();
 
         $pemasukan = 0;
         $pengeluaran = 0;
