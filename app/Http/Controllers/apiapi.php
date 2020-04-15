@@ -45,24 +45,19 @@ function writeSaldo()
     $pemasukan = $saldo + $pemasukan;
     $saldo = $pemasukan - $pengeluaran;
 
-    $ambilSaldo = tsaldo::where('created_at', 'like', '%' . date('Y-m-d') . '%')->where([
-        'idUser' => Session::get('userLogin')->id,
-        'idLaporan' => null
-    ])->get();
+    // $ambilSaldo = tsaldo::where('created_at', 'like', '%' . date('Y-m-d') . '%')->where([
+    //     'idUser' => Session::get('userLogin')->id,
+    //     'idLaporan' => 0
+    // ])->get();
 
-    if (count($ambilSaldo) > 0) {
-        tsaldo::where('created_at', 'like', '%' . date('Y-m-d') . '%')->where([
-            'idUser' => Session::get('userLogin')->id,
-            'idLaporan' => null
-        ])->update([
-            'jumlah' => $saldo
-        ]);
-    } else {
-        tsaldo::create([
-            'jumlah' => $saldo,
-            'idUser' => Session::get('userLogin')->id
-        ]);
-    }
+    // if (count($ambilSaldo) > 0) {
+    //     return false;
+    // } else {
+    tsaldo::create([
+        'jumlah' => $saldo,
+        'idUser' => Session::get('userLogin')->id
+    ]);
+    // }
 }
 
 class apiapi extends Controller
@@ -104,8 +99,19 @@ class apiapi extends Controller
 
     public function deleteDataLaporan(Request $a)
     {
-        tsaldo::where('idLaporan', $a->id)->delete();
-        tlaporan::destroy($a->id);
+        // LANJUT HAPUS LAPORAN SERENTAk
+        $getLaporan = tlaporan::where([
+            'idUser' => Session::get('userLogin')->id,
+        ])->where('tanggal', '>=', $a->tanggal)->get();
+
+        $daftarLaporan = [];
+
+        foreach ($getLaporan as $laporan) {
+            array_push($daftarLaporan, $laporan->id);
+            tsaldo::where('idLaporan', $laporan->id)->delete();
+        }
+
+        tlaporan::destroy($daftarLaporan);
 
         writeSaldo();
     }
@@ -322,7 +328,8 @@ class apiapi extends Controller
         } else {
             tsaldo::create([
                 'jumlah' => $saldo,
-                'idUser' => Session::get('userLogin')->id
+                'idUser' => Session::get('userLogin')->id,
+                'idLaporan' => $a->idLaporan
             ]);
         }
     }

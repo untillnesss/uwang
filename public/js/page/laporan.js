@@ -33,11 +33,14 @@ var dataTableLaporan = $("#example1").DataTable({
             name: "aksi",
             width: "30%",
             render: function (data) {
+                console.log(typeof data.tanggal);
                 var btn = "";
                 btn +=
                     '<button class="btn btn-sm btn-danger mr-2" onclick="deleteFun(' +
                     data.id +
-                    ')"><i class="fas fa-trash"></i></button>';
+                    ", '" +
+                    data.tanggal +
+                    '\')"><i class="fas fa-trash"></i></button>';
                 // btn +=
                 //     '<button class="btn btn-sm btn-success mr-2" onclick="editFun(' +
                 //     data.id +
@@ -65,7 +68,7 @@ $(() => {
     $("#fieldPenanggalanEdit").html(penanggalan($("#tanggalEdit").val()));
 });
 
-function deleteFun(id) {
+function deleteFun(id, tanggal) {
     Swal.fire({
         title: "Peringatan !",
         text:
@@ -80,6 +83,7 @@ function deleteFun(id) {
                 method: "POST",
                 data: {
                     id: id,
+                    tanggal: tanggal,
                 },
                 beforeSend: function () {
                     np();
