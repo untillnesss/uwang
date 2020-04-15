@@ -14,13 +14,15 @@ class summary extends Controller
 
     public function summary()
     {
-        $saldo = tsaldo::where('idUser', Session::get('userLogin')->id)->orderBy('created_at', 'asc')->limit(10)->get();
-        $saldoSaldo = array();
-        $tanggal = array();
+        $saldo = tsaldo::select('tsaldos.jumlah', 'tlaporans.tanggal')->leftJoin('tlaporans', 'tsaldos.idLaporan', '=', 'tlaporans.id')->where('tsaldos.idUser', Session::get('userLogin')->id)->orderBy('tlaporans.tanggal', 'asc')->limit(10)->get();
+        $saldoSaldo = [];
+        $tanggal = [];
+
+        // dd($saldo);
 
         foreach ($saldo as $s) {
             array_push($saldoSaldo, $s->jumlah);
-            array_push($tanggal, $s->created_at);
+            array_push($tanggal, $s->tanggal);
         }
 
         return response()->json([$saldoSaldo, $tanggal]);
@@ -28,7 +30,7 @@ class summary extends Controller
 
     public function pemasukanPengeluaran()
     {
-        $res = array();
+        $res = [];
 
         $laporan = tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'asc')->limit(10)->get();
 
