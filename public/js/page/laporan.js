@@ -43,12 +43,15 @@ var dataTableLaporan = $("#example1").DataTable({
                 //     data.id +
                 //     ')"><i class="fas fa-edit"></i></button>';
 
-                // if (data.terbit == '1') {
-                //     btn +=
-                //         '<button class="btn btn-sm btn-danger btn-icon-split pull-right" onclick="terbitFun(' + data.id + ', 0)"><span class="icon"><i class="fas fa-times"></i></span><span class="text">Batal Terbitkan</span></button>';
-                // } else {
-                //     btn +=
-                //         '<button class="btn btn-sm btn-primary btn-icon-split pull-right" onclick="terbitFun(' + data.id + ', 1)"><span class="icon"><i class="fas fa-check"></i></span><span class="text">Terbitkan</span></button>';
+                if (data.terbit != "1") {
+                    btn +=
+                        '<button class="btn btn-sm btn-primary btn-icon-split pull-right" onclick="terbitFun(' +
+                        data.id +
+                        ', 1)"><span class="icon"><i class="fas fa-check"></i></span><span class="text">Terbitkan</span></button>';
+                }
+                // else {
+                // btn +=
+                //     '<button class="btn btn-sm btn-danger btn-icon-split pull-right"><span class="icon"><i class="fas fa-times"></i></span><span class="text">Diterbitkan</span></button>';
                 // }
 
                 return btn;

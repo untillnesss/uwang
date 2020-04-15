@@ -98,7 +98,7 @@ class apiapi extends Controller
     public function getDataLaporan()
     {
         return DataTables::of(
-            tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'asc')->get()
+            tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'desc')->get()
         )->make(true);
     }
 
@@ -185,12 +185,18 @@ class apiapi extends Controller
     {
         $res = collect();
         // $query = DB::select('select tlaporans.*, tpoins.id as idPoin from tlaporans left join tpoins on tlaporans.id = tpoins.idLaporan where tlaporans.idUser = ' . Session::get('userLogin')->id);
-        $laporan = tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'asc')->get();
+        $laporan = tlaporan::where('idUser', Session::get('userLogin')->id)->orderBy('tanggal', 'desc')->get();
         foreach ($laporan as $lapo) {
             $poin = tpoin::where([
                 'idUser' => Session::get('userLogin')->id,
                 'idLaporan' => $lapo->id
             ])->count();
+
+            if ($poin > 0) {
+                $poin = true;
+            } else {
+                $poin = false;
+            }
 
             // dd($lapo);
             $res->push([
@@ -235,7 +241,7 @@ class apiapi extends Controller
         return tpoin::where([
             'idLaporan' => $id,
             'idUser' => Session::get('userLogin')->id
-        ])->orderBy('jenis', 'desc')->get();
+        ])->orderBy('jenis', 'asc')->get();
     }
 
     public function poinLaporan(Request $a)

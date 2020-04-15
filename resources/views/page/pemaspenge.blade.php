@@ -19,7 +19,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Detail laporan</h6>
                 </div>
                 <div class="card-body">
-                    <div class="table-responseive">
+                    <div class="table-responsive">
                         <table class="table table-stripped">
                             <thead>
                                 <tr>

@@ -37,29 +37,31 @@ function templateAccLaporan(data) {
         tmp += "</div>";
         tmp += "</div>";
         tmp += "</div>";
-        tmp +=
-            '<div class="card-footer"><div class="row"><div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between">';
-        if (d.terbit != 1) {
+        if (!d.poin) {
+            tmp +=
+                '<div class="card-footer"><div class="row"><div class="col-lg-12 col-md-12 col-sm-12 d-flex justify-content-between">';
+            // console.log(d.poin);
             tmp +=
                 '<button class="btn btn-success btn-sm" onclick="goToLaporan(\'' +
                 d.tanggal +
                 "', '" +
                 d.id +
                 "')\">Kelola Laporan</button>";
+            // if (d.terbit == "1") {
+            //     tmp +=
+            //         '<span></span><div class="btn btn-sm btn-success btn-icon-split pull-right"><span class="icon"><i class="fas fa-check"></i></span><span class="text">Diterbitkan</span></div>';
+            // } else {
+            //     var opt = d.poin == 0 ? "disabled" : "";
+            //     tmp +=
+            //         '<button class="btn btn-sm btn-primary btn-icon-split pull-right" ' +
+            //         opt +
+            //         ' onclick="terbitFun(' +
+            //         d.id +
+            //         ', 1)"><span class="icon"><i class="fas fa-check"></i></span><span class="text">Terbitkan Laporan</span></button>';
+            // }
+            tmp += "</div>";
         }
-        if (d.terbit == "1") {
-            tmp +=
-                '<span></span><div class="btn btn-sm btn-success btn-icon-split pull-right"><span class="icon"><i class="fas fa-check"></i></span><span class="text">Diterbitkan</span></div>';
-        } else {
-            var opt = d.poin == 0 ? "disabled" : "";
-            tmp +=
-                '<button class="btn btn-sm btn-primary btn-icon-split pull-right" ' +
-                opt +
-                ' onclick="terbitFun(' +
-                d.id +
-                ', 1)"><span class="icon"><i class="fas fa-check"></i></span><span class="text">Terbitkan Laporan</span></button>';
-        }
-        tmp += "</div></div></div>";
+        tmp += "</div></div>";
         tmp += "</div>";
         tmp += "</div>";
 
@@ -122,6 +124,7 @@ $(document).on("click", "a", function () {
                         } else {
                             $("#cardBodyAccLaporan" + id + "").empty();
                             var tmp = "";
+                            tmp += '<div class="table-responsive">';
                             tmp += '<table class="table table-stripped">';
                             tmp += "<thead>";
                             tmp += "<tr>";
@@ -135,10 +138,13 @@ $(document).on("click", "a", function () {
                                 tmp += templatePoinLaporan(dleng, d, i, "show");
                             });
                             tmp += "</tbody>";
+
                             tmp += "</table>";
+                            tmp += "</div>";
 
                             tmp +=
-                                '<div class="row d-flex justify-content-end"><div class="col-sm-6 col-md-6 col-lg-6 pull-right">';
+                                '<div class="row d-flex justify-content-end"><div class="col-lg-6 pull-right">';
+                            tmp += '<div class="table-responsive">';
                             tmp += '<table class="table table-stripped">';
                             tmp +=
                                 "<tr><th>Pemasukan</th><th>Pengeluaran</th><th>Jumlah</th></tr>";
@@ -151,6 +157,7 @@ $(document).on("click", "a", function () {
                                 writeSummary("total", data) +
                                 "</td></tr>";
                             tmp += "</table>";
+                            // tmp += "</div>";
                             tmp += "</div></div>";
                             $("#cardBodyAccLaporan" + id + "").html(tmp);
                         }
@@ -579,37 +586,48 @@ function savePoinLaporan() {
     });
 
     if (inc == hasilFor) {
-        $.ajax({
-            url: apis + "pemaspenge/poin/save",
-            method: "POST",
-            data: {
-                idLaporan: G_idLaporan,
-                poin: JSON.parse(localStorage.getItem("poinLaporan")),
-                masuk: localStorage.getItem("+"),
-                keluar: localStorage.getItem("-"),
-                total: localStorage.getItem("total"),
-            },
-            beforeSend: function () {
-                Swal.fire({
-                    title: "Memperoses permintaan ..",
-                    text: "Menyimpan beberapa poin laporan untuk anda",
-                    onBeforeOpen: () => {
-                        Swal.showLoading();
+        Swal.fire({
+            title: "Pemberitahuan",
+            type: "info",
+            showCancelButton: true,
+            text:
+                "Laporan akan disimpan,dan tidak dapat diubah. Pastikan data yang anda masukkan sudah benar",
+            confirmButtonText: "Ya, Benar",
+        }).then((res) => {
+            if (res.value) {
+                $.ajax({
+                    url: apis + "pemaspenge/poin/save",
+                    method: "POST",
+                    data: {
+                        idLaporan: G_idLaporan,
+                        poin: JSON.parse(localStorage.getItem("poinLaporan")),
+                        masuk: localStorage.getItem("+"),
+                        keluar: localStorage.getItem("-"),
+                        total: localStorage.getItem("total"),
                     },
-                    allowOutsideClick: false,
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: "Memperoses permintaan ..",
+                            text: "Menyimpan beberapa poin laporan untuk anda",
+                            onBeforeOpen: () => {
+                                Swal.showLoading();
+                            },
+                            allowOutsideClick: false,
+                        });
+                    },
+                    success: () =>
+                        Swal.fire({
+                            title: "Berhasil !",
+                            text: "Berhasil menyimpan poin !",
+                            type: "success",
+                            allowOutsideClick: false,
+                        }).then((res) => {
+                            if (res.value) {
+                                window.location.reload();
+                            }
+                        }),
                 });
-            },
-            success: () =>
-                Swal.fire({
-                    title: "Berhasil !",
-                    text: "Berhasil menyimpan poin !",
-                    type: "success",
-                    allowOutsideClick: false,
-                }).then((res) => {
-                    if (res.value) {
-                        window.location.reload();
-                    }
-                }),
+            }
         });
     }
 }
