@@ -45,19 +45,19 @@ function writeSaldo()
     $pemasukan = $saldo + $pemasukan;
     $saldo = $pemasukan - $pengeluaran;
 
-    // $ambilSaldo = tsaldo::where('created_at', 'like', '%' . date('Y-m-d') . '%')->where([
-    //     'idUser' => Session::get('userLogin')->id,
-    //     'idLaporan' => 0
-    // ])->get();
+    $ambilSaldo = tsaldo::where('created_at', 'like', '%' . date('Y-m-d') . '%')->where([
+        'idUser' => Session::get('userLogin')->id,
+        'idLaporan' => 0
+    ])->get();
 
-    // if (count($ambilSaldo) > 0) {
-    //     return false;
-    // } else {
-    tsaldo::create([
-        'jumlah' => $saldo,
-        'idUser' => Session::get('userLogin')->id
-    ]);
-    // }
+    if (count($ambilSaldo) > 0) {
+        return false;
+    } else {
+        tsaldo::create([
+            'jumlah' => $saldo,
+            'idUser' => Session::get('userLogin')->id
+        ]);
+    }
 }
 
 class apiapi extends Controller

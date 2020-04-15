@@ -122,7 +122,7 @@
         </div>
 
         <div class="row mt-4" id="loading">
-            <div class="col-12 p-1">
+            <div class="col-12">
                 <div class="card py-3 d-flex justify-content-center align-items-center">
                     <div class="spinner-grow text-primary" role="status"></div>
                 </div>
@@ -187,6 +187,44 @@
         </div>
 
         <div class="row mt-4" id="fieldCardLaporan" style="display:none;"></div>
+
+        <hr>
+        <div class="row my-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <a class="btn " data-toggle="collapse" href="#collapseGrafik" role="button" aria-expanded="false" aria-controls="collapseGrafik">Grafik Ringkasan</a>
+                    </div>
+                    <div class="collapse" id="collapseGrafik">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h6 class="m-0 font-weight-bold text-primary">Garafik Perubahan Saldo</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="myChart" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <h6 class="m-0 font-weight-bold text-primary">Garafik Perubahan Pemasukan dan Pengeluaran</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="myChart2" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <nav class="navbar navbar-light bg-dark fixed-top" id="myNav" style="display: none">

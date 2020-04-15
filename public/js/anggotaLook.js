@@ -34,7 +34,7 @@ function getLaporan() {
             genereateButtonNav();
             if (data == "") {
                 isi +=
-                    '<div class="col-12 p-1"><div class="card"><div class="card-body text-center">Tidak ada data laporan yang di publikasikan, silahkan hubungi admin !</div></div></div>';
+                    '<div class="col-12"><div class="card"><div class="card-body text-center">Tidak ada data laporan yang di publikasikan, silahkan hubungi admin !</div></div></div>';
             } else {
                 $.each(data, function (i, d) {
                     isi += '<div class="col-md-6 col-xs-12 ';
